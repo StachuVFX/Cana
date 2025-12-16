@@ -38,6 +38,7 @@
 /* Begin PBXFileReference section */
 		298AC9EC2EF0F3E500F47B2B /* Cana.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cana.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		298ACA042EF0F47E00F47B2B /* SDL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL.xcodeproj; path = "/Users/stachu/Dev/Graphics Programming/SDL_release/Xcode/SDL/SDL.xcodeproj"; sourceTree = "<absolute>"; };
+		298ACA122EF0F8F300F47B2B /* README.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -63,6 +64,7 @@
 		298AC9E32EF0F3E500F47B2B = {
 			isa = PBXGroup;
 			children = (
+				298ACA122EF0F8F300F47B2B /* README.txt */,
 				298ACA042EF0F47E00F47B2B /* SDL.xcodeproj */,
 				298AC9EE2EF0F3E500F47B2B /* Cana */,
 				298ACA0E2EF0F4A900F47B2B /* Frameworks */,
@@ -130,6 +132,7 @@
 				TargetAttributes = {
 					298AC9EB2EF0F3E500F47B2B = {
 						CreatedOnToolsVersion = 26.2;
+						LastSwiftMigration = 2620;
 					};
 				};
 			};
@@ -309,6 +312,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -330,6 +334,8 @@
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -338,6 +344,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -359,6 +366,7 @@
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};
