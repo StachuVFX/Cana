@@ -38,7 +38,7 @@
 /* Begin PBXFileReference section */
 		298AC9EC2EF0F3E500F47B2B /* Cana.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cana.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		298ACA042EF0F47E00F47B2B /* SDL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL.xcodeproj; path = "/Users/stachu/Dev/Graphics Programming/SDL_release/Xcode/SDL/SDL.xcodeproj"; sourceTree = "<absolute>"; };
-		298ACA122EF0F8F300F47B2B /* README.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		298ACA122EF0F8F300F47B2B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -64,7 +64,7 @@
 		298AC9E32EF0F3E500F47B2B = {
 			isa = PBXGroup;
 			children = (
-				298ACA122EF0F8F300F47B2B /* README.txt */,
+				298ACA122EF0F8F300F47B2B /* README.md */,
 				298ACA042EF0F47E00F47B2B /* SDL.xcodeproj */,
 				298AC9EE2EF0F3E500F47B2B /* Cana */,
 				298ACA0E2EF0F4A900F47B2B /* Frameworks */,
