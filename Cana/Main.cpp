@@ -7,11 +7,10 @@
 
 /*
     TODO:
- - add drawing functions
  - make color struct (learn how to use structs)
  
     DONE:
- - Cana came alive (changed the name, created a new repo and updated the functions)
+ - add drawing functions
 */
 
 //  System Includes
@@ -29,8 +28,8 @@
 //  Defines
 #define SCREEN_WIDTH 1440
 #define SCREEN_HEIGHT 900
-#define DRAW_WIDTH 800
-#define DRAW_HEIGHT 600
+#define DRAW_WIDTH 120
+#define DRAW_HEIGHT 90
 
 //  Structs
 
@@ -75,8 +74,8 @@ int main(int argc, char* argv[]) {
     /* Colors */
 //    Uint32 black = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 0, 0);
 //    Uint32 white = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 255, 255);
-//    Uint32 red = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 0, 0);
-//    Uint32 green = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 255, 0);
+    Uint32 red = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 0, 0);
+    Uint32 green = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 255, 0);
     Uint32 blue = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 0, 255);
 //    Uint32 cyan = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 255, 255);
 //    Uint32 magenta = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 0, 255);
@@ -121,9 +120,11 @@ int main(int argc, char* argv[]) {
         
         //drawSquare_old(pixels, draw_width, draw_height, 100, red);
 //        drawSquare(pixels, draw_width, draw_height, 200, 400, 300, white);
+        Cana_drawSquare(drawingSurface_pixels, draw_width, draw_height, 0, 0, 70, green);
 
 //        drawLine(pixels, draw_width, draw_height, Point(100, 100), Point(300, 500), red);
 //        drawLine(pixels, draw_width, draw_height, Point(100, 500), Point(300, 100), red);
+        Cana_drawLine(drawingSurface_pixels, Cana_Point(draw_width, draw_height), Cana_Point(25, 30), Cana_Point(95, 60), red);
 
         //drawTriangle(pixels, draw_width, draw_height, Point(600, 100), Point(500, 500), Point(700, 500), green, 1);
 //        drawTriangle(pixels, draw_width, draw_height, Point(-150, 550), Point(550, -50), Point(950, 650), green, 1);
