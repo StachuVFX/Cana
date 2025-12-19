@@ -6,11 +6,19 @@
 //
 
 /*
+    Possible optimizations:
+- inline functions
+ 
     TODO:
+ - add drawTriangle function
  - make color struct (learn how to use structs)
+ - create Cana class
+ - implement timing
+ - test if references and pointers are faster
  
     DONE:
- - add drawing functions
+ - changed ifndef to pragma once in header files (Cherno C++ ep.10)
+ - change function variables to const
 */
 
 //  System Includes

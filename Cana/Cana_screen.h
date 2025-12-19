@@ -1,12 +1,10 @@
 //
-//  screen.h
-//  SDL Graphics
+//  Cana_screen.h
+//  Cana
 //
 //  Created by Stachu on 15.12.2025.
 //
-
-#ifndef screen_h_
-#define screen_h_
+#pragma once
 
 enum Cana_KeepRatio
 {
@@ -23,7 +21,7 @@ enum Cana_KeepRatio
  * \param bufferB Destination buffer
  * \param length Buffer length (usually width x height)
  */
-void Cana_copyPixels(Uint32* bufferA, Uint32* bufferB, int length);
+void Cana_copyPixels(Uint32* bufferA, Uint32* bufferB, const int length);
 /**
  * Copy pixel data from an SDL\_Surface to an SDL\_Texture
  *
@@ -33,7 +31,7 @@ void Cana_copyPixels(Uint32* bufferA, Uint32* bufferB, int length);
  * \param texture SDL_Texture (destination)
  * \param length Buffer length (usually width x height)
  */
-void Cana_copyPixels(SDL_Surface* surface, SDL_Texture* texture, int length);
+void Cana_copyPixels(SDL_Surface* surface, SDL_Texture* texture, const int length);
 
 /**
  * Scale one pixel buffer into another
@@ -46,7 +44,7 @@ void Cana_copyPixels(SDL_Surface* surface, SDL_Texture* texture, int length);
  * \param destinationW Destination buffer width
  * \param ratio FIT or FILL
  */
-void Cana_scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, int sourceH, int sourceW, int destinationH, int destinationW, Cana_KeepRatio ratio);
+void Cana_scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, const int sourceH, const int sourceW, const int destinationH, const int destinationW, const Cana_KeepRatio ratio);
 /**
  * Scale an SDL\_Surface into another SDL\_Surface
  *
@@ -54,6 +52,4 @@ void Cana_scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, int sourc
  * \param destination Surface to scale into
  * \param ratio FIT or FILL
  */
-void Cana_scalePixels(SDL_Surface* source, SDL_Surface* destination, Cana_KeepRatio ratio);
-
-#endif // !screen_h_
+void Cana_scalePixels(SDL_Surface* source, SDL_Surface* destination, const Cana_KeepRatio ratio);

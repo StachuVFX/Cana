@@ -1,6 +1,6 @@
 //
-//  screen.cpp
-//  SDL Graphics
+//  Cana_screen.cpp
+//  Cana
 //
 //  Created by Stachu on 15.12.2025.
 //
@@ -8,13 +8,13 @@
 #include <SDL3/SDL.h>
 #include "Cana_screen.h"
 
-void Cana_copyPixels(Uint32* bufferA, Uint32* bufferB, int length)
+void Cana_copyPixels(Uint32* bufferA, Uint32* bufferB, const int length)
 {
     for (int i = 0; i < length; i++) {
         bufferB[i] = bufferA[i];
     }
 }
-void Cana_copyPixels(SDL_Surface* surface, SDL_Texture* texture, int length)
+void Cana_copyPixels(SDL_Surface* surface, SDL_Texture* texture, const int length)
 {
     SDL_LockSurface(surface);
     Uint32* surfacePixels = (Uint32*)surface->pixels;
@@ -32,7 +32,7 @@ void Cana_copyPixels(SDL_Surface* surface, SDL_Texture* texture, int length)
     SDL_UnlockSurface(surface);
 }
 
-void Cana_scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, int sourceH, int sourceW, int destinationH, int destinationW, Cana_KeepRatio ratio)
+void Cana_scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, const int sourceH, const int sourceW, const int destinationH, const int destinationW, const Cana_KeepRatio ratio)
 {
     int fitToHeight = 1;
 //    float sh = (float)sourceH;
@@ -90,7 +90,7 @@ void Cana_scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, int sourc
         break;
     }
 }
-void Cana_scalePixels(SDL_Surface* source, SDL_Surface* destination, Cana_KeepRatio ratio)
+void Cana_scalePixels(SDL_Surface* source, SDL_Surface* destination, const Cana_KeepRatio ratio)
 {
     SDL_LockSurface(source);
     SDL_LockSurface(destination);

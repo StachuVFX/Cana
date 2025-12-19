@@ -12,7 +12,7 @@
 
 Cana_Point::Cana_Point(int x, int y) : x(x), y(y) {};
 
-void Cana_clear(Uint32* pixels, int width, int height, Uint32 color)
+void Cana_clear(Uint32* pixels, const int width, const int height, const Uint32 color)
 {
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
@@ -20,14 +20,14 @@ void Cana_clear(Uint32* pixels, int width, int height, Uint32 color)
         }
     }
 }
-void Cana_clear(Uint32* pixels, int length, Uint32 color)
+void Cana_clear(Uint32* pixels, const int length, const Uint32 color)
 {
     for (int i = 0; i < length; i++) {
         pixels[i] = color;
     }
 }
 
-void Cana_drawSquare(Uint32* pixels, int width, int height, int x, int y, int size, Uint32 color)
+void Cana_drawSquare(Uint32* pixels, const int width, const int height, const int x, const int y, const int size, const Uint32 color)
 {
     for (int i = 0; i < size; i++) {
         int targetH = height / 2 + y - (size / 2) + i;
@@ -37,7 +37,7 @@ void Cana_drawSquare(Uint32* pixels, int width, int height, int x, int y, int si
         }
     }
 }
-void Cana_drawSquare(Uint32* pixels, Cana_Point dimensions, Cana_Point position, int size, Uint32 color)
+void Cana_drawSquare(Uint32* pixels, const Cana_Point dimensions, const Cana_Point position, const int size, const Uint32 color)
 {
     for (int i = 0; i < size; i++) {
         int targetH = dimensions.y / 2 + position.y - (size / 2) + i;
@@ -48,7 +48,7 @@ void Cana_drawSquare(Uint32* pixels, Cana_Point dimensions, Cana_Point position,
     }
 }
 
-void Cana_drawLine(Uint32* pixels, Cana_Point dimensions, Cana_Point pointA, Cana_Point pointB, Uint32 color)
+void Cana_drawLine(Uint32* pixels, const Cana_Point dimensions, const Cana_Point pointA, const Cana_Point pointB, const Uint32 color)
 {
     int lineWidth = pointB.x - pointA.x;
     int widthSign = SIGN(lineWidth);
