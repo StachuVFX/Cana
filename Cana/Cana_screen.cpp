@@ -43,7 +43,7 @@ void Cana_scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, const int
     float wScale = (float)sourceW / (float)destinationW;
     switch (ratio)
     {
-    case FIT:
+    case KeepRatio_Fit:
         if (wScale > hScale) {
             fitToHeight = 0;
         }
@@ -74,7 +74,7 @@ void Cana_scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, const int
             break;
         }
         break;
-    case FILL:
+    case KeepRatio_Fill:
                     // can be optimized
         for (int  i = 0; i < destinationH; i++) {
             for (int j = 0; j < destinationW; j++) {
@@ -107,7 +107,7 @@ void Cana_scalePixels(SDL_Surface* source, SDL_Surface* destination, const Cana_
     float wScale = (float)source->w / (float)destination->w;
     switch (ratio)
     {
-    case FIT:
+    case KeepRatio_Fit:
         if (wScale > hScale) {
             fitToHeight = 0;
         }
@@ -138,7 +138,7 @@ void Cana_scalePixels(SDL_Surface* source, SDL_Surface* destination, const Cana_
             break;
         }
         break;
-    case FILL:
+    case KeepRatio_Fill:
                     // can be optimized
         for (int  i = 0; i < destination->h; i++) {
             for (int j = 0; j < destination->w; j++) {

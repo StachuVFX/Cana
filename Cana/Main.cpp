@@ -11,14 +11,14 @@
  
     TODO:
  - add drawTriangle function
- - make color struct (learn how to use structs)
  - create Cana class
+ - maybe change functions arguments to references
  - implement timing
  - test if references and pointers are faster
  
     DONE:
- - changed ifndef to pragma once in header files (Cherno C++ ep.10)
- - change function variables to const
+ - make color struct (learn how to use structs)
+ - made variables static (Cherno C++ 21)
 */
 
 //  System Includes
@@ -41,7 +41,17 @@
 
 //  Structs
 
+//  Function declarations
+
 //  Variable declarations
+Uint32 Cana_Color::black;
+Uint32 Cana_Color::white;
+Uint32 Cana_Color::red;
+Uint32 Cana_Color::green;
+Uint32 Cana_Color::blue;
+Uint32 Cana_Color::cyan;
+Uint32 Cana_Color::magenta;
+Uint32 Cana_Color::yellow;
 
 //  Main function
 int main(int argc, char* argv[]) {
@@ -63,31 +73,31 @@ int main(int argc, char* argv[]) {
     
 /* Game setup */
     /* Variables */
-    SDL_Event event;
-    bool running = true;
-    int screen_width = 0;
-    int screen_height = 0;
-    int draw_width = DRAW_WIDTH;
-    int draw_height = DRAW_HEIGHT;
+    static SDL_Event event;
+    static bool running = true;
+    static int screen_width = 0;
+    static int screen_height = 0;
+    static int draw_width = DRAW_WIDTH;
+    static int draw_height = DRAW_HEIGHT;
     SDL_GetWindowSize(window, &screen_width, &screen_height);
     /* Create texture for the renderer and usable surfaces */
-    SDL_Texture* rendererTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, screen_width, screen_height);
-    SDL_Surface* windowSurface = SDL_CreateSurface(screen_width, screen_height, SDL_PIXELFORMAT_ARGB8888);
-    SDL_Surface* drawingSurface = SDL_CreateSurface(draw_width, draw_height, SDL_PIXELFORMAT_ARGB8888);
+    static SDL_Texture* rendererTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, screen_width, screen_height);
+    static SDL_Surface* windowSurface = SDL_CreateSurface(screen_width, screen_height, SDL_PIXELFORMAT_ARGB8888);
+    static SDL_Surface* drawingSurface = SDL_CreateSurface(draw_width, draw_height, SDL_PIXELFORMAT_ARGB8888);
     /* Prepare pixel buffer pointers for surfaces and texture */
     Uint32* drawingSurface_pixels = (Uint32*)drawingSurface->pixels; /* (assign only to remember how, the surface is not locked anyway) */
 //    void* rendererTexture_pixels;
 //    int rendererTexture_pitch;
     
     /* Colors */
-//    Uint32 black = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 0, 0);
-//    Uint32 white = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 255, 255);
-    Uint32 red = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 0, 0);
-    Uint32 green = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 255, 0);
-    Uint32 blue = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 0, 255);
-//    Uint32 cyan = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 255, 255);
-//    Uint32 magenta = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 0, 255);
-//    Uint32 yellow = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 255, 0);
+    Cana_Color::black = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 0, 0);
+    Cana_Color::white = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 255, 255);
+    Cana_Color::red = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 0, 0);
+    Cana_Color::green = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 255, 0);
+    Cana_Color::blue = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 0, 255);
+    Cana_Color::cyan = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 255, 255);
+    Cana_Color::magenta = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 0, 255);
+    Cana_Color::yellow = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 255, 0);
     
 /* Game loop */
     while (running) {
@@ -124,15 +134,15 @@ int main(int argc, char* argv[]) {
         drawingSurface_pixels = (Uint32*)drawingSurface->pixels;
         
 //        clear(drawingSurface_pixels, draw_width, draw_height, blue);
-        Cana_clear(drawingSurface_pixels, draw_width * draw_height, blue);
+        Cana_clear(drawingSurface_pixels, draw_width * draw_height, Cana_Color::blue);
         
         //drawSquare_old(pixels, draw_width, draw_height, 100, red);
 //        drawSquare(pixels, draw_width, draw_height, 200, 400, 300, white);
-        Cana_drawSquare(drawingSurface_pixels, draw_width, draw_height, 0, 0, 70, green);
+        Cana_drawSquare(drawingSurface_pixels, draw_width, draw_height, 0, 0, 70, Cana_Color::green);
 
 //        drawLine(pixels, draw_width, draw_height, Point(100, 100), Point(300, 500), red);
 //        drawLine(pixels, draw_width, draw_height, Point(100, 500), Point(300, 100), red);
-        Cana_drawLine(drawingSurface_pixels, Cana_Point(draw_width, draw_height), Cana_Point(25, 30), Cana_Point(95, 60), red);
+        Cana_drawLine(drawingSurface_pixels, Cana_Point(draw_width, draw_height), Cana_Point(25, 30), Cana_Point(95, 60), Cana_Color::red);
 
         //drawTriangle(pixels, draw_width, draw_height, Point(600, 100), Point(500, 500), Point(700, 500), green, 1);
 //        drawTriangle(pixels, draw_width, draw_height, Point(-150, 550), Point(550, -50), Point(950, 650), green, 1);
@@ -143,7 +153,7 @@ int main(int argc, char* argv[]) {
 
         /*   Swapping buffers */
         /* Scale surface */
-        Cana_scalePixels(drawingSurface, windowSurface, FIT);
+        Cana_scalePixels(drawingSurface, windowSurface, KeepRatio_Fit);
         /* Copy window surface to window texture */
         Cana_copyPixels(windowSurface, rendererTexture, screen_width * screen_height);
         /* Swap buffers */

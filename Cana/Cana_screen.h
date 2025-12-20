@@ -8,8 +8,7 @@
 
 enum Cana_KeepRatio
 {
-    FILL = 0,
-    FIT = 1
+    KeepRatio_Fill, KeepRatio_Fit
 };
 
 /**

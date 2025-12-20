@@ -6,8 +6,24 @@
 //
 #pragma once
 
-struct Cana_Point {
+struct Cana_Color {
+public:
+    static Uint32 black;
+    static Uint32 white;
+    static Uint32 red;
+    static Uint32 green;
+    static Uint32 blue;
+    static Uint32 cyan;
+    static Uint32 magenta;
+    static Uint32 yellow;
+private:
+    Cana_Color() = delete;
+};
+
+struct Cana_Point
+{
     const int x, y;
+    
     Cana_Point(int x, int y);
 };
 
