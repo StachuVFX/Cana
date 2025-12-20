@@ -4,7 +4,10 @@
 //
 //  Created by Stachu on 15.12.2025.
 //
+
 #pragma once
+
+#include <SDL3/SDL.h>
 
 enum Cana_KeepRatio
 {

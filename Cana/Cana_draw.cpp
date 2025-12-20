@@ -5,7 +5,6 @@
 //  Created by Stachu on 16.12.2025.
 //
 
-#include <SDL3/SDL.h>
 #include "Cana_draw.h"
 
 #define SIGN(X) ((X > 0) - (X < 0))

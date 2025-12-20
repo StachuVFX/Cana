@@ -4,7 +4,10 @@
 //
 //  Created by Stachu on 16.12.2025.
 //
+
 #pragma once
+
+#include <SDL3/SDL.h>
 
 struct Cana_Color {
 public:
@@ -22,7 +25,7 @@ private:
 
 struct Cana_Point
 {
-    const int x, y;
+    int x, y;
     
     Cana_Point(int x, int y);
 };

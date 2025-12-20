@@ -5,7 +5,6 @@
 //  Created by Stachu on 15.12.2025.
 //
 
-#include <SDL3/SDL.h>
 #include "Cana_screen.h"
 
 void Cana_copyPixels(Uint32* bufferA, Uint32* bufferB, const int length)
