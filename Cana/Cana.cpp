@@ -15,6 +15,7 @@ Cana::Cana(const char* program_name, const char* program_version, const char* pr
 
 void Cana::createWindow(const char* window_name, const int screen_width, const int screen_height, const WindowType window_type)
 {
+    /* Startup */
     window = NULL;
     renderer = NULL;
     running = true;
@@ -30,20 +31,24 @@ void Cana::createWindow(const char* window_name, const int screen_width, const i
 //        return SDL_APP_FAILURE;
         running = false;
     }
+    /* Create texture for the renderer */
     SDL_GetWindowSize(window, &screenDimensions.x, &screenDimensions.y);
     rendererTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, screenDimensions.x, screenDimensions.y);
 }
 
 void Cana::createDrawingSurface(const int surface_width, const int surface_height)
 {
+    /* Create usable surfaces */
     drawDimensions.set(surface_width, surface_height);
     windowSurface = SDL_CreateSurface(screenDimensions.x, screenDimensions.y, SDL_PIXELFORMAT_ARGB8888);
     drawingSurface = SDL_CreateSurface(drawDimensions.x, drawDimensions.y, SDL_PIXELFORMAT_ARGB8888);
-    drawingSurface_pixels = (Uint32*)drawingSurface->pixels;
+    /* Prepare pixel buffer pointers for surfaces and texture */
+    drawingSurface_pixels = (Uint32*)drawingSurface->pixels; /* (assign only to remember how, the surface is not locked anyway) */
 }
 
 Cana_Color Cana::mapColors()
 {
+    /* Colors */
     colors.black = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 0, 0);
     colors.white = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 255, 255);
     colors.red = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 0, 0);
@@ -58,11 +63,13 @@ Cana_Color Cana::mapColors()
 
 void Cana::checkEvents()
 {
+    /* Events */
     while (SDL_PollEvent(&event)) {
         /* Keyboard */
         if (event.type == SDL_EVENT_KEY_DOWN) {
             if (event.key.scancode == SDL_SCANCODE_ESCAPE) {
                 running = false;
+                break;
             }
         }
         /* Window resized */
@@ -76,12 +83,14 @@ void Cana::checkEvents()
         /* Window quit */
         else if (event.type == SDL_EVENT_QUIT) {   /* stop the game loop */
             running = false;
+            break;
         }
     }
 }
 
 void Cana::drawingStart()
 {
+    /* Lock drawing surface and assign pixel buffer pointer */
     SDL_LockSurface(drawingSurface);
     drawingSurface_pixels = (Uint32*)drawingSurface->pixels;
 }
@@ -101,13 +110,15 @@ void Cana::drawLine(const Cana_Point pointA, const Cana_Point pointB, const Uint
     Cana_drawLine(drawingSurface_pixels, drawDimensions, pointA, pointB, color);
 }
 
-void Cana::drawingStop()
+void Cana::drawingFinish()
 {
+    /* Unlock drawing surface */
     SDL_UnlockSurface(drawingSurface);
 }
 
 void Cana::scale()
 {
+    /* Scale surface */
     Cana_scalePixels(drawingSurface, windowSurface, KeepRatio_Fit);
 }
 
