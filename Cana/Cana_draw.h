@@ -11,23 +11,25 @@
 
 struct Cana_Color {
 public:
-    static Uint32 black;
-    static Uint32 white;
-    static Uint32 red;
-    static Uint32 green;
-    static Uint32 blue;
-    static Uint32 cyan;
-    static Uint32 magenta;
-    static Uint32 yellow;
-private:
-    Cana_Color() = delete;
+    Uint32 black;
+    Uint32 white;
+    Uint32 red;
+    Uint32 green;
+    Uint32 blue;
+    Uint32 cyan;
+    Uint32 magenta;
+    Uint32 yellow;
 };
 
 struct Cana_Point
 {
+public:
     int x, y;
+public:
+    Cana_Point();
+    Cana_Point(const int x, const int y);
     
-    Cana_Point(int x, int y);
+    void set(const int x, const int y);
 };
 
 /**

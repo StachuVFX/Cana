@@ -10,7 +10,7 @@
 - inline functions
  
     TODO:
- - make Cana class work by including other headers
+ - test Cana
  - move all functions to classes
  - add drawTriangle function
  - maybe change functions arguments to references
@@ -18,6 +18,7 @@
  - test if references and pointers are faster
  
     DONE:
+ - include other headers to Cana
  - changed screens dimensions to point objects
  - create Cana class
 */
@@ -45,14 +46,14 @@
 //  Function declarations
 
 //  Variable declarations
-Uint32 Cana_Color::black;
-Uint32 Cana_Color::white;
-Uint32 Cana_Color::red;
-Uint32 Cana_Color::green;
-Uint32 Cana_Color::blue;
-Uint32 Cana_Color::cyan;
-Uint32 Cana_Color::magenta;
-Uint32 Cana_Color::yellow;
+//Uint32 Cana_Color::black;
+//Uint32 Cana_Color::white;
+//Uint32 Cana_Color::red;
+//Uint32 Cana_Color::green;
+//Uint32 Cana_Color::blue;
+//Uint32 Cana_Color::cyan;
+//Uint32 Cana_Color::magenta;
+//Uint32 Cana_Color::yellow;
 
 //  Main function
 int main(int argc, char* argv[]) {
@@ -98,14 +99,15 @@ int main(int argc, char* argv[]) {
     
     /* Colors */
 //    color = cana.mapColors();
-    Cana_Color::black = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 0, 0);
-    Cana_Color::white = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 255, 255);
-    Cana_Color::red = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 0, 0);
-    Cana_Color::green = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 255, 0);
-    Cana_Color::blue = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 0, 255);
-    Cana_Color::cyan = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 255, 255);
-    Cana_Color::magenta = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 0, 255);
-    Cana_Color::yellow = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 255, 0);
+    Cana_Color color;
+    color.black = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 0, 0);
+    color.white = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 255, 255);
+    color.red = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 0, 0);
+    color.green = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 255, 0);
+    color.blue = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 0, 255);
+    color.cyan = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 255, 255);
+    color.magenta = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 0, 255);
+    color.yellow = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 255, 0);
     
 /* Game loop */
     while (running) {
@@ -148,15 +150,15 @@ int main(int argc, char* argv[]) {
         drawingSurface_pixels = (Uint32*)drawingSurface->pixels;
         
 //        clear(drawingSurface_pixels, draw_width, draw_height, blue);
-        Cana_clear(drawingSurface_pixels, drawDimensions.x * drawDimensions.y, Cana_Color::blue);
+        Cana_clear(drawingSurface_pixels, drawDimensions.x * drawDimensions.y, color.blue);
         
         //drawSquare_old(pixels, draw_width, draw_height, 100, red);
 //        drawSquare(pixels, draw_width, draw_height, 200, 400, 300, white);
-        Cana_drawSquare(drawingSurface_pixels, drawDimensions.x, drawDimensions.y, 0, 0, 70, Cana_Color::green);
+        Cana_drawSquare(drawingSurface_pixels, drawDimensions.x, drawDimensions.y, 0, 0, 70, color.green);
 
 //        drawLine(pixels, draw_width, draw_height, Point(100, 100), Point(300, 500), red);
 //        drawLine(pixels, draw_width, draw_height, Point(100, 500), Point(300, 100), red);
-        Cana_drawLine(drawingSurface_pixels, drawDimensions, Cana_Point(25, 30), Cana_Point(95, 60), Cana_Color::red);
+        Cana_drawLine(drawingSurface_pixels, drawDimensions, Cana_Point(25, 30), Cana_Point(95, 60), color.red);
 
         //drawTriangle(pixels, draw_width, draw_height, Point(600, 100), Point(500, 500), Point(700, 500), green, 1);
 //        drawTriangle(pixels, draw_width, draw_height, Point(-150, 550), Point(550, -50), Point(950, 650), green, 1);

@@ -9,7 +9,22 @@
 
 #define SIGN(X) ((X > 0) - (X < 0))
 
-Cana_Point::Cana_Point(int x, int y) : x(x), y(y) {};
+Cana_Point::Cana_Point()
+{
+    x = 0;
+    y = 0;
+}
+Cana_Point::Cana_Point(const int x, const int y)
+{
+    this->x = x;
+    this->y = y;
+}
+
+void Cana_Point::set(const int x, const int y)
+{
+    this->x = x;
+    this->y = y;
+}
 
 void Cana_clear(Uint32* pixels, const int width, const int height, const Uint32 color)
 {

@@ -7,23 +7,6 @@
 
 #include "Cana.h"
 
-Cana_Point::Cana_Point()
-{
-    x = 0;
-    y = 0;
-}
-Cana_Point::Cana_Point(const int x, const int y)
-{
-    this->x = x;
-    this->y = y;
-}
-
-void Cana_Point::set(const int x, const int y)
-{
-    this->x = x;
-    this->y = y;
-}
-
 Cana::Cana(const char* program_name, const char* program_version, const char* product_identifier)
 {
     /* Set up app metadata */
@@ -103,19 +86,19 @@ void Cana::drawingStart()
     drawingSurface_pixels = (Uint32*)drawingSurface->pixels;
 }
 
-void Cana::clear(const Cana_Color color)
+void Cana::clear(const Uint32 color)
 {
-//    Cana_clear(drawingSurface_pixels, drawDimensions.x * drawDimensions.y, color);
+    Cana_clear(drawingSurface_pixels, drawDimensions.x * drawDimensions.y, color);
 }
 
 void Cana::drawSquare(const Cana_Point position, const int size, const Uint32 color)
 {
-//    Cana_drawSquare(drawingSurface_pixels, drawDimensions.x, drawDimensions.y, position.x, position.y, size, color);
+    Cana_drawSquare(drawingSurface_pixels, drawDimensions.x, drawDimensions.y, position.x, position.y, size, color);
 }
 
 void Cana::drawLine(const Cana_Point pointA, const Cana_Point pointB, const Uint32 color)
 {
-//    Cana_drawLine(drawingSurface_pixels, drawDimensions, pointA, pointB, color);
+    Cana_drawLine(drawingSurface_pixels, drawDimensions, pointA, pointB, color);
 }
 
 void Cana::drawingStop()
@@ -125,13 +108,13 @@ void Cana::drawingStop()
 
 void Cana::scale()
 {
-//    Cana_scalePixels(drawingSurface, windowSurface, KeepRatio_Fit);
+    Cana_scalePixels(drawingSurface, windowSurface, KeepRatio_Fit);
 }
 
 void Cana::swap()
 {
     /* Copy window surface to window texture */
-//    Cana_copyPixels(windowSurface, rendererTexture, screenDimensions.x * screenDimensions.y);
+    Cana_copyPixels(windowSurface, rendererTexture, screenDimensions.x * screenDimensions.y);
     /* Swap buffers */
     SDL_RenderClear(renderer);
     SDL_RenderTexture(renderer, rendererTexture, nullptr, nullptr);
