@@ -31,32 +31,29 @@ void Cana::createWindow(const char* window_name, const int screen_width, const i
 //        return SDL_APP_FAILURE;
         running = false;
     }
-    /* Create texture for the renderer */
+    /* Create texture for the renderer and window surface */
     SDL_GetWindowSize(window, &screenDimensions.x, &screenDimensions.y);
     rendererTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, screenDimensions.x, screenDimensions.y);
+    windowSurface = SDL_CreateSurface(screenDimensions.x, screenDimensions.y, SDL_PIXELFORMAT_ARGB8888);
 }
 
 void Cana::createDrawingSurface(const int surface_width, const int surface_height)
 {
-    /* Create usable surfaces */
-    drawDimensions.set(surface_width, surface_height);
-    windowSurface = SDL_CreateSurface(screenDimensions.x, screenDimensions.y, SDL_PIXELFORMAT_ARGB8888);
-    drawingSurface = SDL_CreateSurface(drawDimensions.x, drawDimensions.y, SDL_PIXELFORMAT_ARGB8888);
-    /* Prepare pixel buffer pointers for surfaces and texture */
-    drawingSurface_pixels = (Uint32*)drawingSurface->pixels; /* (assign only to remember how, the surface is not locked anyway) */
+    /* Create drawing surface */
+    cana_renderer.createDrawingSurface(surface_width, surface_height);
 }
 
 Cana_Color Cana::mapColors()
 {
     /* Colors */
-    colors.black = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 0, 0);
-    colors.white = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 255, 255);
-    colors.red = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 0, 0);
-    colors.green = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 255, 0);
-    colors.blue = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 0, 255);
-    colors.cyan = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 0, 255, 255);
-    colors.magenta = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 0, 255);
-    colors.yellow = SDL_MapRGB(SDL_GetPixelFormatDetails(drawingSurface->format), NULL, 255, 255, 0);
+    colors.black = SDL_MapRGB(SDL_GetPixelFormatDetails(cana_renderer.drawingSurface->format), NULL, 0, 0, 0);
+    colors.white = SDL_MapRGB(SDL_GetPixelFormatDetails(cana_renderer.drawingSurface->format), NULL, 255, 255, 255);
+    colors.red = SDL_MapRGB(SDL_GetPixelFormatDetails(cana_renderer.drawingSurface->format), NULL, 255, 0, 0);
+    colors.green = SDL_MapRGB(SDL_GetPixelFormatDetails(cana_renderer.drawingSurface->format), NULL, 0, 255, 0);
+    colors.blue = SDL_MapRGB(SDL_GetPixelFormatDetails(cana_renderer.drawingSurface->format), NULL, 0, 0, 255);
+    colors.cyan = SDL_MapRGB(SDL_GetPixelFormatDetails(cana_renderer.drawingSurface->format), NULL, 0, 255, 255);
+    colors.magenta = SDL_MapRGB(SDL_GetPixelFormatDetails(cana_renderer.drawingSurface->format), NULL, 255, 0, 255);
+    colors.yellow = SDL_MapRGB(SDL_GetPixelFormatDetails(cana_renderer.drawingSurface->format), NULL, 255, 255, 0);
     
     return colors;
 }
@@ -88,38 +85,38 @@ void Cana::checkEvents()
     }
 }
 
-void Cana::drawingStart()
+void Cana::drawingStart()   // move to renderer
 {
     /* Lock drawing surface and assign pixel buffer pointer */
-    SDL_LockSurface(drawingSurface);
-    drawingSurface_pixels = (Uint32*)drawingSurface->pixels;
+    SDL_LockSurface(cana_renderer.drawingSurface);
+    cana_renderer.surfacePixels = (Uint32*)cana_renderer.drawingSurface->pixels;
 }
 
 void Cana::clear(const Uint32 color)
 {
-    Cana_clear(drawingSurface_pixels, drawDimensions.x * drawDimensions.y, color);
+    cana_renderer.clear(color);
 }
 
 void Cana::drawSquare(const Cana_Point position, const int size, const Uint32 color)
 {
-    Cana_drawSquare(drawingSurface_pixels, drawDimensions.x, drawDimensions.y, position.x, position.y, size, color);
+    cana_renderer.drawSquare(position, size, color);
 }
 
 void Cana::drawLine(const Cana_Point pointA, const Cana_Point pointB, const Uint32 color)
 {
-    Cana_drawLine(drawingSurface_pixels, drawDimensions, pointA, pointB, color);
+    cana_renderer.drawLine(pointA, pointB, color);
 }
 
 void Cana::drawingFinish()
 {
     /* Unlock drawing surface */
-    SDL_UnlockSurface(drawingSurface);
+    SDL_UnlockSurface(cana_renderer.drawingSurface);
 }
 
 void Cana::scale()
 {
     /* Scale surface */
-    Cana_scalePixels(drawingSurface, windowSurface, KeepRatio_Fit);
+    Cana_scalePixels(cana_renderer.drawingSurface, windowSurface, KeepRatio_Fit);
 }
 
 void Cana::swap()
@@ -135,7 +132,7 @@ void Cana::swap()
 void Cana::quit()
 {
     /* Cleaning */
-    SDL_DestroySurface(drawingSurface);
+    SDL_DestroySurface(cana_renderer.drawingSurface);
     SDL_DestroySurface(windowSurface);
     SDL_DestroyTexture(rendererTexture);
     SDL_DestroyRenderer(renderer);

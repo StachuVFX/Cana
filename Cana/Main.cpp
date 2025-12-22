@@ -17,9 +17,7 @@
  - test if references and pointers are faster
  
     DONE:
- - documented Cana.h and Cana.cpp
- - test Cana (it just works!!!)
- - clean up Main.cpp (omg im so proud of myself)
+ - moved Cana_draw functions to Cana_Renderer class
 */
 
 //  System Includes

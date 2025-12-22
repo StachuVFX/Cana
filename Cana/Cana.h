@@ -8,11 +8,14 @@
 #pragma once
 
 #include <SDL3/SDL.h>
-#include "Cana_draw.h"
+//#include "Cana_draw.h"
 #include "Cana_screen.h"
+#include "Cana_renderer.h"
 
 enum WindowType {
-    WindowType_Windowed = SDL_WINDOW_RESIZABLE, WindowType_Boderless = SDL_WINDOW_BORDERLESS, WindowType_Fullscreen = SDL_WINDOW_FULLSCREEN
+    WindowType_Windowed = SDL_WINDOW_RESIZABLE,
+    WindowType_Boderless = SDL_WINDOW_BORDERLESS,
+    WindowType_Fullscreen = SDL_WINDOW_FULLSCREEN
 };
 
 class Cana
@@ -23,16 +26,18 @@ private:
     SDL_Window* window;
     SDL_Renderer* renderer;
     SDL_Texture* rendererTexture;
-    /* Drawing pointers */
     SDL_Surface* windowSurface;
-    SDL_Surface* drawingSurface;
-    Uint32* drawingSurface_pixels;
+    /* Drawing pointers */   // moving to renderer
+//    SDL_Surface* drawingSurface;
+//    Uint32* drawingSurface_pixels;
     /* Dimensions */
     Cana_Point screenDimensions;
-    Cana_Point drawDimensions;
+//    Cana_Point drawDimensions;   // moving to renderer
     /* Other */
     SDL_Event event;
     Cana_Color colors;
+    /* Cana Renderer */
+    Cana_Renderer cana_renderer;
 public:
     bool running;
 public:
