@@ -15,26 +15,7 @@ Cana::Cana(const char* program_name, const char* program_version, const char* pr
 
 void Cana::createWindow(const char* window_name, const int screen_width, const int screen_height, const WindowType window_type)
 {
-    /* Startup */
-    window = NULL;
-    renderer = NULL;
-    running = true;
-    /* Check if SDL Video works */
-    if (!SDL_Init(SDL_INIT_VIDEO)) {
-        SDL_Log("Couldn't initialize SDL: %s", SDL_GetError());
-//        return SDL_APP_FAILURE;
-        running = false;
-    }
-    /* Create window and renderer (renderer mandatory in SDL3) */
-    if (!SDL_CreateWindowAndRenderer("Cana", screen_width, screen_height, SDL_WINDOW_FULLSCREEN, &window, &renderer)) {
-        SDL_Log("Couldn't create a window and renderer: %s", SDL_GetError());
-//        return SDL_APP_FAILURE;
-        running = false;
-    }
-    /* Create texture for the renderer and window surface */
-    SDL_GetWindowSize(window, &screenDimensions.x, &screenDimensions.y);
-    rendererTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, screenDimensions.x, screenDimensions.y);
-    windowSurface = SDL_CreateSurface(screenDimensions.x, screenDimensions.y, SDL_PIXELFORMAT_ARGB8888);
+    running = screen.createWindow(window_name, screen_width, screen_height, window_type);
 }
 
 void Cana::createDrawingSurface(const int surface_width, const int surface_height)
@@ -71,11 +52,11 @@ void Cana::checkEvents()
         }
         /* Window resized */
         else if (event.type == SDL_EVENT_WINDOW_RESIZED) {  /* set window texture and surface again */
-            SDL_GetWindowSize(window, &screenDimensions.x, &screenDimensions.y);
-            SDL_DestroyTexture(rendererTexture);
-            rendererTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, screenDimensions.x, screenDimensions.y);
-            SDL_DestroySurface(windowSurface);
-            windowSurface = SDL_CreateSurface(screenDimensions.x, screenDimensions.y, SDL_PIXELFORMAT_ARGB8888);
+            SDL_GetWindowSize(screen.window, &screen.screenDimensions.x, &screen.screenDimensions.y);
+            SDL_DestroyTexture(screen.rendererTexture);
+            screen.rendererTexture = SDL_CreateTexture(screen.renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, screen.screenDimensions.x, screen.screenDimensions.y);
+            SDL_DestroySurface(screen.windowSurface);
+            screen.windowSurface = SDL_CreateSurface(screen.screenDimensions.x, screen.screenDimensions.y, SDL_PIXELFORMAT_ARGB8888);
         }
         /* Window quit */
         else if (event.type == SDL_EVENT_QUIT) {   /* stop the game loop */
@@ -116,26 +97,26 @@ void Cana::drawingFinish()
 void Cana::scale()
 {
     /* Scale surface */
-    Cana_scalePixels(cana_renderer.drawingSurface, windowSurface, KeepRatio_Fit);
+    screen.scalePixels(cana_renderer.drawingSurface, screen.windowSurface, KeepRatio_Fit);
 }
 
 void Cana::swap()
 {
     /* Copy window surface to window texture */
-    Cana_copyPixels(windowSurface, rendererTexture, screenDimensions.x * screenDimensions.y);
+    screen.copyPixels(screen.windowSurface, screen.rendererTexture, screen.screenDimensions.x * screen.screenDimensions.y);
     /* Swap buffers */
-    SDL_RenderClear(renderer);
-    SDL_RenderTexture(renderer, rendererTexture, nullptr, nullptr);
-    SDL_RenderPresent(renderer);
+    SDL_RenderClear(screen.renderer);
+    SDL_RenderTexture(screen.renderer, screen.rendererTexture, nullptr, nullptr);
+    SDL_RenderPresent(screen.renderer);
 }
 
 void Cana::quit()
 {
     /* Cleaning */
     SDL_DestroySurface(cana_renderer.drawingSurface);
-    SDL_DestroySurface(windowSurface);
-    SDL_DestroyTexture(rendererTexture);
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
+    SDL_DestroySurface(screen.windowSurface);
+    SDL_DestroyTexture(screen.rendererTexture);
+    SDL_DestroyRenderer(screen.renderer);
+    SDL_DestroyWindow(screen.window);
     SDL_Quit();
 }

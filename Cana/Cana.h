@@ -12,34 +12,33 @@
 #include "Cana_screen.h"
 #include "Cana_renderer.h"
 
-enum WindowType {
-    WindowType_Windowed = SDL_WINDOW_RESIZABLE,
-    WindowType_Boderless = SDL_WINDOW_BORDERLESS,
-    WindowType_Fullscreen = SDL_WINDOW_FULLSCREEN
-};
-
 class Cana
 {
+    /* Variables */
 private:
-/* Variables */
-    /* Window pointers */
-    SDL_Window* window;
-    SDL_Renderer* renderer;
-    SDL_Texture* rendererTexture;
-    SDL_Surface* windowSurface;
+    /* Cana Screen */
+    Cana_Screen screen;
+    /* Window pointers */   // move to screen
+//    SDL_Window* window;
+//    SDL_Renderer* renderer;
+//    SDL_Texture* rendererTexture;
+//    SDL_Surface* windowSurface;
+    /* Cana Renderer */
+    Cana_Renderer cana_renderer;
     /* Drawing pointers */   // moving to renderer
 //    SDL_Surface* drawingSurface;
 //    Uint32* drawingSurface_pixels;
     /* Dimensions */
-    Cana_Point screenDimensions;
+//    Cana_Point screenDimensions;   // move to screen
 //    Cana_Point drawDimensions;   // moving to renderer
     /* Other */
     SDL_Event event;
     Cana_Color colors;
-    /* Cana Renderer */
-    Cana_Renderer cana_renderer;
+    int windowLength;
 public:
     bool running;
+    
+    /* Methods */
 public:
     /**
      * Create Cana object

@@ -7,13 +7,41 @@
 
 #include "Cana_screen.h"
 
-void Cana_copyPixels(Uint32* bufferA, Uint32* bufferB, const int length)
+bool Cana_Screen::createWindow(const char* window_name, const int screen_width, const int screen_height, const WindowType window_type)
+{
+    /* Startup */
+    window = NULL;
+    renderer = NULL;
+    /* Check if SDL Video works */
+    if (!SDL_Init(SDL_INIT_VIDEO)) {
+        SDL_Log("Couldn't initialize SDL: %s", SDL_GetError());
+//        return SDL_APP_FAILURE;
+//        running = false;
+        return false;
+    }
+    /* Create window and renderer (renderer mandatory in SDL3) */
+    if (!SDL_CreateWindowAndRenderer("Cana", screen_width, screen_height, SDL_WINDOW_FULLSCREEN, &window, &renderer)) {
+        SDL_Log("Couldn't create a window and renderer: %s", SDL_GetError());
+//        return SDL_APP_FAILURE;
+//        running = false;
+        return false;
+    }
+    /* Create texture for the renderer and window surface */
+    SDL_GetWindowSize(window, &screenDimensions.x, &screenDimensions.y);
+    rendererTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, screenDimensions.x, screenDimensions.y);
+    windowSurface = SDL_CreateSurface(screenDimensions.x, screenDimensions.y, SDL_PIXELFORMAT_ARGB8888);
+    windowLength = screenDimensions.x * screenDimensions.y;
+    
+    return true;
+}
+
+void Cana_Screen::copyPixels(Uint32* bufferA, Uint32* bufferB, const int length)
 {
     for (int i = 0; i < length; i++) {
         bufferB[i] = bufferA[i];
     }
 }
-void Cana_copyPixels(SDL_Surface* surface, SDL_Texture* texture, const int length)
+void Cana_Screen::copyPixels(SDL_Surface* surface, SDL_Texture* texture, const int length)
 {
     SDL_LockSurface(surface);
     Uint32* surfacePixels = (Uint32*)surface->pixels;
@@ -31,7 +59,7 @@ void Cana_copyPixels(SDL_Surface* surface, SDL_Texture* texture, const int lengt
     SDL_UnlockSurface(surface);
 }
 
-void Cana_scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, const int sourceH, const int sourceW, const int destinationH, const int destinationW, const Cana_KeepRatio ratio)
+void Cana_Screen::scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, const int sourceH, const int sourceW, const int destinationH, const int destinationW, const Cana_KeepRatio ratio)
 {
     int fitToHeight = 1;
 //    float sh = (float)sourceH;
@@ -89,7 +117,7 @@ void Cana_scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, const int
         break;
     }
 }
-void Cana_scalePixels(SDL_Surface* source, SDL_Surface* destination, const Cana_KeepRatio ratio)
+void Cana_Screen::scalePixels(SDL_Surface* source, SDL_Surface* destination, const Cana_KeepRatio ratio)
 {
     SDL_LockSurface(source);
     SDL_LockSurface(destination);
