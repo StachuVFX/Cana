@@ -27,7 +27,7 @@ private:
 public:
     /* Window pointers */
     SDL_Window* window;
-    SDL_Renderer* renderer;
+    SDL_Renderer* sdl_renderer;
     SDL_Texture* rendererTexture;   // rendererTexture
     SDL_Surface* windowSurface;   // windowSurface
     int windowLength;
@@ -35,7 +35,15 @@ public:
     Cana_Point screenDimensions;
 private:
 public:
+    /**
+     * Generate the window
+     */
     bool createWindow(const char* window_name, const int screen_width, const int screen_height, const WindowType window_type);
+    
+    /**
+     * Resize screen to actual window dimensions
+     */
+    void resizeScreen();
     
     /**
      * Copy pixel data from one pixel buffer to another
@@ -78,4 +86,18 @@ public:
      * \param ratio FIT or FILL
      */
     void scalePixels(SDL_Surface* source, SDL_Surface* destination, const Cana_KeepRatio ratio);
+    
+    /**
+     * Swap screen
+     *
+     * Copy pixels from window surface to SDL renderer texture
+     */
+    void swap();
+    
+    /**
+     * Quit screen
+     *
+     * Clean up screen memory
+     */
+    void quit();
 };

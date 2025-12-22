@@ -11,7 +11,7 @@ bool Cana_Screen::createWindow(const char* window_name, const int screen_width, 
 {
     /* Startup */
     window = NULL;
-    renderer = NULL;
+    sdl_renderer = NULL;
     /* Check if SDL Video works */
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         SDL_Log("Couldn't initialize SDL: %s", SDL_GetError());
@@ -19,20 +19,31 @@ bool Cana_Screen::createWindow(const char* window_name, const int screen_width, 
 //        running = false;
         return false;
     }
-    /* Create window and renderer (renderer mandatory in SDL3) */
-    if (!SDL_CreateWindowAndRenderer("Cana", screen_width, screen_height, SDL_WINDOW_FULLSCREEN, &window, &renderer)) {
-        SDL_Log("Couldn't create a window and renderer: %s", SDL_GetError());
+    /* Create window and sdl_renderer (sdl_renderer mandatory in SDL3) */
+    if (!SDL_CreateWindowAndRenderer("Cana", screen_width, screen_height, SDL_WINDOW_FULLSCREEN, &window, &sdl_renderer)) {
+        SDL_Log("Couldn't create a window and sdl_renderer: %s", SDL_GetError());
 //        return SDL_APP_FAILURE;
 //        running = false;
         return false;
     }
-    /* Create texture for the renderer and window surface */
+    /* Create texture for the sdl_renderer and window surface */
     SDL_GetWindowSize(window, &screenDimensions.x, &screenDimensions.y);
-    rendererTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, screenDimensions.x, screenDimensions.y);
+    rendererTexture = SDL_CreateTexture(sdl_renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, screenDimensions.x, screenDimensions.y);
     windowSurface = SDL_CreateSurface(screenDimensions.x, screenDimensions.y, SDL_PIXELFORMAT_ARGB8888);
     windowLength = screenDimensions.x * screenDimensions.y;
     
     return true;
+}
+
+void Cana_Screen::resizeScreen()
+{
+    /* Set window texture and surface again */
+    SDL_GetWindowSize(window, &screenDimensions.x, &screenDimensions.y);
+    SDL_DestroyTexture(rendererTexture);
+    rendererTexture = SDL_CreateTexture(sdl_renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, screenDimensions.x, screenDimensions.y);
+    SDL_DestroySurface(windowSurface);
+    windowSurface = SDL_CreateSurface(screenDimensions.x, screenDimensions.y, SDL_PIXELFORMAT_ARGB8888);
+    windowLength = screenDimensions.x * screenDimensions.y;
 }
 
 void Cana_Screen::copyPixels(Uint32* bufferA, Uint32* bufferB, const int length)
@@ -183,4 +194,23 @@ void Cana_Screen::scalePixels(SDL_Surface* source, SDL_Surface* destination, con
 
     SDL_UnlockSurface(source);
     SDL_UnlockSurface(destination);
+}
+
+void Cana_Screen::swap()
+{
+    /* Copy window surface to window texture */
+    copyPixels(windowSurface, rendererTexture, windowLength);
+    /* Swap buffers */
+    SDL_RenderClear(sdl_renderer);
+    SDL_RenderTexture(sdl_renderer, rendererTexture, nullptr, nullptr);
+    SDL_RenderPresent(sdl_renderer);
+}
+
+void Cana_Screen::quit()
+{
+    /* Cleaning */
+    SDL_DestroySurface(windowSurface);
+    SDL_DestroyTexture(rendererTexture);
+    SDL_DestroyRenderer(sdl_renderer);
+    SDL_DestroyWindow(window);
 }

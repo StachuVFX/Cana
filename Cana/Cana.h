@@ -16,25 +16,12 @@ class Cana
 {
     /* Variables */
 private:
-    /* Cana Screen */
+    /* Screen and renderer */
     Cana_Screen screen;
-    /* Window pointers */   // move to screen
-//    SDL_Window* window;
-//    SDL_Renderer* renderer;
-//    SDL_Texture* rendererTexture;
-//    SDL_Surface* windowSurface;
-    /* Cana Renderer */
-    Cana_Renderer cana_renderer;
-    /* Drawing pointers */   // moving to renderer
-//    SDL_Surface* drawingSurface;
-//    Uint32* drawingSurface_pixels;
-    /* Dimensions */
-//    Cana_Point screenDimensions;   // move to screen
-//    Cana_Point drawDimensions;   // moving to renderer
+    Cana_Renderer renderer;
     /* Other */
     SDL_Event event;
     Cana_Color colors;
-    int windowLength;
 public:
     bool running;
     

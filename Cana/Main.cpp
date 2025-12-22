@@ -10,15 +10,15 @@
 - inline functions
  
     TODO:
- - move methods from Cana to Cana_screen
+ - decide next steps (should Cana handle everything, or create screen and renderer objects in main function)
  - add drawTriangle function
  - maybe change functions arguments to references
  - implement timing
  - test if references and pointers are faster
  
     DONE:
- - moved Color and Point structs to Cana_structs.h
- - move Cana_screen functions to Cana_Screen class
+ - move methods from Cana to Cana_Screen
+ - moved methods from Cana to Cana_Renderer
 */
 
 //  System Includes

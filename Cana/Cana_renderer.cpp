@@ -28,6 +28,19 @@ void Cana_Renderer::createDrawingSurface(const int surface_width, const int surf
     surfaceLength = surface_width * surface_height;
 }
 
+void Cana_Renderer::drawingStart()
+{
+    /* Lock drawing surface and assign pixel buffer pointer */
+    SDL_LockSurface(drawingSurface);
+    surfacePixels = (Uint32*)drawingSurface->pixels;
+}
+
+void Cana_Renderer::drawingFinish()
+{
+    /* Unlock drawing surface */
+    SDL_UnlockSurface(drawingSurface);
+}
+
 void Cana_Renderer::clear(const Uint32 color)
 {
     for (int i = 0; i < surfaceLength; i++) {
@@ -64,4 +77,10 @@ void Cana_Renderer::drawLine(const Cana_Point pointA, const Cana_Point pointB, c
         int globalW = pointA.x + localW * widthSign;
         surfacePixels[globalH * drawDimensions.x + globalW] = color;
     }
+}
+
+void Cana_Renderer::quit()
+{
+    /* Cleaning */
+    SDL_DestroySurface(drawingSurface);
 }

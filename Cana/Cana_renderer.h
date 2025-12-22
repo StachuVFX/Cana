@@ -31,6 +31,19 @@ public:
     void createDrawingSurface(const int surface_width, const int surface_height);
     
     /**
+     * Prepare renderer to start drawing
+     *
+     * Lock drawing surface
+     */
+    void drawingStart();
+    /**
+     * Confirm drawing finish
+     *
+     * Unlock drawing surface
+     */
+    void drawingFinish();
+    
+    /**
      * Clear a pixel buffer with a color
      *
      * \param color Color to draw with
@@ -54,4 +67,11 @@ public:
      * \param color Line color
      */
     void drawLine(const Cana_Point pointA, const Cana_Point pointB, const Uint32 color);
+    
+    /**
+     * Quit renderer
+     *
+     * Clean up renderer memory
+     */
+    void quit();
 };
