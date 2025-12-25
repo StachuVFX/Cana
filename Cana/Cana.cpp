@@ -18,10 +18,11 @@ void Cana::createWindow(const char* window_name, const int screen_width, const i
     running = screen.createWindow(window_name, screen_width, screen_height, window_type);
 }
 
-void Cana::createDrawingSurface(const int surface_width, const int surface_height)
+Cana_Renderer Cana::createRenderer(const int surface_width, const int surface_height)
 {
     /* Create drawing surface */
     renderer.createDrawingSurface(surface_width, surface_height);
+    return renderer;
 }
 
 Cana_Color Cana::mapColors()
@@ -67,21 +68,6 @@ void Cana::drawingStart()
     renderer.drawingStart();
 }
 
-void Cana::clear(const Uint32 color)
-{
-    renderer.clear(color);
-}
-
-void Cana::drawSquare(const Cana_Point position, const int size, const Uint32 color)
-{
-    renderer.drawSquare(position, size, color);
-}
-
-void Cana::drawLine(const Cana_Point pointA, const Cana_Point pointB, const Uint32 color)
-{
-    renderer.drawLine(pointA, pointB, color);
-}
-
 void Cana::drawingFinish()
 {
     renderer.drawingFinish();
@@ -89,7 +75,7 @@ void Cana::drawingFinish()
 
 void Cana::scale()
 {
-    /* Scale surface */
+    /* Scale drawing surface to window surface */
     screen.scalePixels(renderer.drawingSurface, screen.windowSurface, KeepRatio_Fit);
 }
 

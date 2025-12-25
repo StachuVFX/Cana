@@ -10,17 +10,23 @@
 #include <SDL3/SDL.h>
 #include "Cana_structs.h"
 
+/* Enums */
 enum WindowType {
     WindowType_Windowed = SDL_WINDOW_RESIZABLE,
     WindowType_Boderless = SDL_WINDOW_BORDERLESS,
     WindowType_Fullscreen = SDL_WINDOW_FULLSCREEN
 };
 
-enum Cana_KeepRatio
+enum KeepRatio
 {
     KeepRatio_Fill, KeepRatio_Fit
 };
 
+/**
+ * \class Cana\_Screen
+ *
+ * Class responsible for window surface, SDL renderer texture, and related functions
+ */
 class Cana_Screen
 {
 private:
@@ -32,7 +38,7 @@ public:
     SDL_Surface* windowSurface;   // windowSurface
     int windowLength;
     /* Dimensions */
-    Cana_Point screenDimensions;
+    Cana_Vec2 screenDimensions;
 private:
 public:
     /**
@@ -77,7 +83,7 @@ public:
      * \param destinationW Destination buffer width
      * \param ratio FIT or FILL
      */
-    void scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, const int sourceH, const int sourceW, const int destinationH, const int destinationW, const Cana_KeepRatio ratio);
+    void scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, const int sourceH, const int sourceW, const int destinationH, const int destinationW, const KeepRatio ratio);
     /**
      * Scale an SDL\_Surface into another SDL\_Surface
      *
@@ -85,7 +91,7 @@ public:
      * \param destination Surface to scale into
      * \param ratio FIT or FILL
      */
-    void scalePixels(SDL_Surface* source, SDL_Surface* destination, const Cana_KeepRatio ratio);
+    void scalePixels(SDL_Surface* source, SDL_Surface* destination, const KeepRatio ratio);
     
     /**
      * Swap screen

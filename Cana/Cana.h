@@ -40,7 +40,7 @@ public:
     /**
      * Create a drawing surface
      */
-    void createDrawingSurface(const int surface_width, const int surface_height);
+    Cana_Renderer createRenderer(const int surface_width, const int surface_height);
     
     /**
      * Map colors
@@ -58,21 +58,6 @@ public:
      * Start the drawing process
      */
     void drawingStart();
-    
-    /**
-     * Clear the surface
-     */
-    void clear(const Uint32 color);
-    
-    /**
-     * Draw a square
-     */
-    void drawSquare(const Cana_Point position, const int size, const Uint32 color);
-    
-    /**
-     * Draw a line
-     */
-    void drawLine(const Cana_Point pointA, const Cana_Point pointB, const Uint32 color);
     
     /**
      * Finish the drawing process

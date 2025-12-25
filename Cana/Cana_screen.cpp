@@ -70,7 +70,7 @@ void Cana_Screen::copyPixels(SDL_Surface* surface, SDL_Texture* texture, const i
     SDL_UnlockSurface(surface);
 }
 
-void Cana_Screen::scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, const int sourceH, const int sourceW, const int destinationH, const int destinationW, const Cana_KeepRatio ratio)
+void Cana_Screen::scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, const int sourceH, const int sourceW, const int destinationH, const int destinationW, const KeepRatio ratio)
 {
     int fitToHeight = 1;
 //    float sh = (float)sourceH;
@@ -128,7 +128,7 @@ void Cana_Screen::scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, c
         break;
     }
 }
-void Cana_Screen::scalePixels(SDL_Surface* source, SDL_Surface* destination, const Cana_KeepRatio ratio)
+void Cana_Screen::scalePixels(SDL_Surface* source, SDL_Surface* destination, const KeepRatio ratio)
 {
     SDL_LockSurface(source);
     SDL_LockSurface(destination);

@@ -7,18 +7,23 @@
 
 /*
     Possible optimizations:
-- inline functions
+ - implement timing to test solution speed
+ - inline functions
+ - change arguments to references
  
     TODO:
- - decide next steps (should Cana handle everything, or create screen and renderer objects in main function)
+ - document functions (especially which format of dimensions)
+ - add conversions betweem local, global and unified dimensions
+ - unify dimensions (float [-1, 1] by width)
  - add drawTriangle function
- - maybe change functions arguments to references
- - implement timing
- - test if references and pointers are faster
+ - try making Cana handle everything
+ - move enums to classes (one day)
+ - create Cana_Event class (one day)
  
     DONE:
- - move methods from Cana to Cana_Screen
- - moved methods from Cana to Cana_Renderer
+ - decided next steps - create renderer, Cana takes care of screen (later try only Cana)
+ - change Cana_Point to Cana_Vec2
+ - try drawing line with less pixels
 */
 
 //  System Includes
@@ -48,11 +53,11 @@
 int main(int argc, char* argv[]) {
 /* Startup */
     Cana cana("Cana Test", "0.1.2", "name.stachu.Cana");
+    /* Screen and renderer */
     cana.createWindow("Cana Test", SCREEN_WIDTH, SCREEN_HEIGHT, WindowType_Fullscreen);
+    Cana_Renderer renderer = cana.createRenderer(DRAW_WIDTH, DRAW_HEIGHT);
     
 /* Game setup */
-    cana.createDrawingSurface(DRAW_WIDTH, DRAW_HEIGHT);
-    
     /* Colors */
     Cana_Color color = cana.mapColors();
     
@@ -69,10 +74,11 @@ int main(int argc, char* argv[]) {
         cana.drawingStart();
         
         /* Only draw here */
-        cana.clear(color.blue);
+        renderer.clear(color.black);
         
-        cana.drawSquare(Cana_Point(0, 0), 70, color.green);
-        cana.drawLine(Cana_Point(25, 30), Cana_Point(95, 60), color.red);
+        renderer.drawSquare(Cana_Vec2(0, 0), 70, color.blue);
+//        renderer.drawTriangle(Cana_Vec2(-30, -30), Cana_Vec2(30, -30), Cana_Vec2(0, 30), color.green);
+        renderer.drawLine(Cana_Vec2(20, 30), Cana_Vec2(100, 60), color.red, PixelAmount_LessPixels);
         
         /* Stop drawing */
         cana.drawingFinish();

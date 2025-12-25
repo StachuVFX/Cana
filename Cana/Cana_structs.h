@@ -10,6 +10,7 @@
 #include <SDL3/SDL.h>
 
 #define SIGN(X) ((X > 0) - (X < 0))
+#define MAX(X, Y) (X > Y ? X : Y)
 
 struct Cana_Color
 {
@@ -23,14 +24,14 @@ struct Cana_Color
     Uint32 yellow;
 };
 
-struct Cana_Point   // change to Cana_Vec2
+struct Cana_Vec2   // change to Cana_Vec2
 {
     /* Variables */
     int x, y;
     
     /* Methods */
-    Cana_Point();
-    Cana_Point(const int x, const int y);
+    Cana_Vec2();
+    Cana_Vec2(const int x, const int y);
     
     void set(const int x, const int y);
 };

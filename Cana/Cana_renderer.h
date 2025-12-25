@@ -10,11 +10,17 @@
 #include <SDL3/SDL.h>
 #include "Cana_structs.h"
 
+enum PixelAmount {
+    PixelAmount_LessPixels, PixelAmount_MorePixels
+};
+
+int Cana_max(const int a, const int b);
+
 class Cana_Renderer
 {
     /* Variables */
 private:
-    Cana_Point drawDimensions;
+    Cana_Vec2 drawDimensions;
     int surfaceLength;
 public:
     SDL_Surface* drawingSurface;
@@ -57,7 +63,7 @@ public:
      * \param size Side length of the square (in pixels)
      * \param color Color
      */
-    void drawSquare(const Cana_Point position, const int size, const Uint32 color);
+    void drawSquare(const Cana_Vec2 position, const int size, const Uint32 color);
 
     /**
      * Draw a line from point A to point B with a color on a pixel buffer
@@ -66,7 +72,9 @@ public:
      * \param pointB End point
      * \param color Line color
      */
-    void drawLine(const Cana_Point pointA, const Cana_Point pointB, const Uint32 color);
+    void drawLine(const Cana_Vec2 pointA, const Cana_Vec2 pointB, const Uint32 color, PixelAmount pixelAmount);
+    
+//    void drawTriangle(Cana_Vec2 pointA, Cana_Vec2 pointB, Cana_Vec2 pointC, Uint32 color);
     
     /**
      * Quit renderer

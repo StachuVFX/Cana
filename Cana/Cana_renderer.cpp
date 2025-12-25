@@ -8,10 +8,10 @@
 #include "Cana_renderer.h"
 
 /* Cana_Point */
-Cana_Point::Cana_Point() : x(0), y(0) {};
-Cana_Point::Cana_Point(const int X, const int Y) : x(X), y(Y) {};
+Cana_Vec2::Cana_Vec2() : x(0), y(0) {};
+Cana_Vec2::Cana_Vec2(const int X, const int Y) : x(X), y(Y) {};
 
-void Cana_Point::set(const int X, const int Y)
+void Cana_Vec2::set(const int X, const int Y)
 {
     this->x = X;
     this->y = Y;
@@ -48,7 +48,7 @@ void Cana_Renderer::clear(const Uint32 color)
     }
 }
 
-void Cana_Renderer::drawSquare(const Cana_Point position, const int size, const Uint32 color)
+void Cana_Renderer::drawSquare(const Cana_Vec2 position, const int size, const Uint32 color)
 {
     for (int i = 0; i < size; i++) {
         int targetH = drawDimensions.y / 2 + position.y - (size / 2) + i;
@@ -59,7 +59,7 @@ void Cana_Renderer::drawSquare(const Cana_Point position, const int size, const 
     }
 }
 
-void Cana_Renderer::drawLine(const Cana_Point pointA, const Cana_Point pointB, const Uint32 color)
+void Cana_Renderer::drawLine(const Cana_Vec2 pointA, const Cana_Vec2 pointB, const Uint32 color, const PixelAmount pixelAmount)
 {
     int lineWidth = pointB.x - pointA.x;
     int widthSign = SIGN(lineWidth);
@@ -69,7 +69,17 @@ void Cana_Renderer::drawLine(const Cana_Point pointA, const Cana_Point pointB, c
     int heightSign = SIGN(lineHeight);
     lineHeight *= heightSign;
     
-    int linePixelLength = lineWidth + lineHeight;
+    int linePixelLength;
+    switch (pixelAmount) {
+        case PixelAmount_MorePixels:
+            linePixelLength = lineWidth + lineHeight;
+            break;
+        case PixelAmount_LessPixels:
+            linePixelLength = MAX(lineWidth, lineHeight);
+            break;
+        default:
+            break;
+    }
     for (int i = 0; i < linePixelLength; i++) {
         int localH = lineHeight * i / linePixelLength;
         int localW = lineWidth * i / linePixelLength;
