@@ -9,20 +9,18 @@
 
 bool Cana_Screen::createWindow(const char* window_name, const int screen_width, const int screen_height, const WindowType window_type)
 {
-    /* Startup */
+    /* SDL window and renderer setup */
     window = NULL;
     sdl_renderer = NULL;
     /* Check if SDL Video works */
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         SDL_Log("Couldn't initialize SDL: %s", SDL_GetError());
-//        return SDL_APP_FAILURE;
 //        running = false;
         return false;
     }
     /* Create window and sdl_renderer (sdl_renderer mandatory in SDL3) */
     if (!SDL_CreateWindowAndRenderer("Cana", screen_width, screen_height, SDL_WINDOW_FULLSCREEN, &window, &sdl_renderer)) {
         SDL_Log("Couldn't create a window and sdl_renderer: %s", SDL_GetError());
-//        return SDL_APP_FAILURE;
 //        running = false;
         return false;
     }
@@ -48,12 +46,14 @@ void Cana_Screen::resizeScreen()
 
 void Cana_Screen::copyPixels(Uint32* bufferA, Uint32* bufferB, const int length)
 {
+    /* Copy all pixels from bufferA to bufferB */
     for (int i = 0; i < length; i++) {
         bufferB[i] = bufferA[i];
     }
 }
 void Cana_Screen::copyPixels(SDL_Surface* surface, SDL_Texture* texture, const int length)
 {
+    /* Copy all pixels from surface to texture */
     SDL_LockSurface(surface);
     Uint32* surfacePixels = (Uint32*)surface->pixels;
     
@@ -72,6 +72,8 @@ void Cana_Screen::copyPixels(SDL_Surface* surface, SDL_Texture* texture, const i
 
 void Cana_Screen::scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, const int sourceH, const int sourceW, const int destinationH, const int destinationW, const KeepRatio ratio)
 {
+    /* Scale all pixels from sourcePixels to destinationPixels */
+    /*    - int based, no float, no blur */
     int fitToHeight = 1;
 //    float sh = (float)sourceH;
 //    float dh = (float)destinationH;
@@ -130,6 +132,8 @@ void Cana_Screen::scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, c
 }
 void Cana_Screen::scalePixels(SDL_Surface* source, SDL_Surface* destination, const KeepRatio ratio)
 {
+    /* Scale all pixels from source surface to destination surface */
+    /*    - int based, no float, no blur */
     SDL_LockSurface(source);
     SDL_LockSurface(destination);
 
@@ -200,7 +204,7 @@ void Cana_Screen::swap()
 {
     /* Copy window surface to window texture */
     copyPixels(windowSurface, rendererTexture, windowLength);
-    /* Swap buffers */
+    /* Swap screen (render texture and present it) */
     SDL_RenderClear(sdl_renderer);
     SDL_RenderTexture(sdl_renderer, rendererTexture, nullptr, nullptr);
     SDL_RenderPresent(sdl_renderer);

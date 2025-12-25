@@ -11,38 +11,50 @@
 #include "Cana_structs.h"
 
 /* Enums */
+/**
+ * Windowed / Borderless / Fullscreen
+ */
 enum WindowType {
     WindowType_Windowed = SDL_WINDOW_RESIZABLE,
     WindowType_Boderless = SDL_WINDOW_BORDERLESS,
     WindowType_Fullscreen = SDL_WINDOW_FULLSCREEN
 };
-
+/**
+ * Scale fit type
+ */
 enum KeepRatio
 {
     KeepRatio_Fill, KeepRatio_Fit
 };
 
+/* Cana_Screen class */
 /**
- * \class Cana\_Screen
- *
  * Class responsible for window surface, SDL renderer texture, and related functions
  */
 class Cana_Screen
 {
+/* Variables */
 private:
 public:
     /* Window pointers */
     SDL_Window* window;
     SDL_Renderer* sdl_renderer;
-    SDL_Texture* rendererTexture;   // rendererTexture
-    SDL_Surface* windowSurface;   // windowSurface
+    SDL_Texture* rendererTexture;
+    SDL_Surface* windowSurface;
     int windowLength;
     /* Dimensions */
     Cana_Vec2 screenDimensions;
+    
+/* Methods */
 private:
 public:
     /**
      * Generate the window
+     *
+     * \param window_name Name of the window
+     * \param screen_width Width of the screen
+     * \param screen_height Height of the screen
+     * \param window_type Windowed / Borderless / Fullscreen
      */
     bool createWindow(const char* window_name, const int screen_width, const int screen_height, const WindowType window_type);
     
@@ -75,6 +87,8 @@ public:
     /**
      * Scale one pixel buffer into another
      *
+     * Int based, no float, no blur
+     *
      * \param sourcePixels Buffer to be scaled
      * \param destinationPixels Buffer to scale into
      * \param sourceH Source buffer height
@@ -86,6 +100,8 @@ public:
     void scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, const int sourceH, const int sourceW, const int destinationH, const int destinationW, const KeepRatio ratio);
     /**
      * Scale an SDL\_Surface into another SDL\_Surface
+     *
+     * Int based, no float, no blur
      *
      * \param source Surface to be scaled
      * \param destination Surface to scale into

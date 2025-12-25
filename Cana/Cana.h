@@ -8,10 +8,12 @@
 #pragma once
 
 #include <SDL3/SDL.h>
-//#include "Cana_draw.h"
 #include "Cana_screen.h"
 #include "Cana_renderer.h"
 
+/**
+ * Simple 3D CPU renderer
+ */
 class Cana
 {
     /* Variables */
@@ -38,7 +40,7 @@ public:
     void createWindow(const char* window_name, const int screen_width, const int screen_height, const WindowType window_type);
     
     /**
-     * Create a drawing surface
+     * Create a renderer
      */
     Cana_Renderer createRenderer(const int surface_width, const int surface_height);
     

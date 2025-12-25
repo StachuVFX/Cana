@@ -12,7 +12,7 @@
  - change arguments to references
  
     TODO:
- - document functions (especially which format of dimensions)
+ - add float and double version of Vec2 and drawing functions
  - add conversions betweem local, global and unified dimensions
  - unify dimensions (float [-1, 1] by width)
  - add drawTriangle function
@@ -21,9 +21,7 @@
  - create Cana_Event class (one day)
  
     DONE:
- - decided next steps - create renderer, Cana takes care of screen (later try only Cana)
- - change Cana_Point to Cana_Vec2
- - try drawing line with less pixels
+ - document functions (especially which format of dimensions)
 */
 
 //  System Includes

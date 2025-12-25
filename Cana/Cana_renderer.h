@@ -10,22 +10,31 @@
 #include <SDL3/SDL.h>
 #include "Cana_structs.h"
 
+/* Enums */
+/**
+ * Amount of pixels being drawn in a line
+ *
+ * Less pixels means length of greater dimension.
+ * More pixels means sum of dimension lengths.
+ */
 enum PixelAmount {
     PixelAmount_LessPixels, PixelAmount_MorePixels
 };
 
-int Cana_max(const int a, const int b);
-
+/* Cana_Renderer class */
+/**
+ * Class responsible for rendering
+ */
 class Cana_Renderer
 {
-    /* Variables */
+/* Variables */
 private:
     Cana_Vec2 drawDimensions;
     int surfaceLength;
 public:
     SDL_Surface* drawingSurface;
     Uint32* surfacePixels;   // move to private
-    /* Methods */
+/* Methods */
 private:
 public:
     /**
@@ -59,6 +68,8 @@ public:
     /**
      * Draw a square with a color on a pixel buffer
      *
+     * Int based. Relative to center.
+     *
      * \param position Position of the square (relative to center)
      * \param size Side length of the square (in pixels)
      * \param color Color
@@ -68,9 +79,12 @@ public:
     /**
      * Draw a line from point A to point B with a color on a pixel buffer
      *
+     * Int based. Relative to top-left.
+     *
      * \param pointA Start point
      * \param pointB End point
      * \param color Line color
+     * \param pixelAmount Amount of pixels drawn (Less / More)
      */
     void drawLine(const Cana_Vec2 pointA, const Cana_Vec2 pointB, const Uint32 color, PixelAmount pixelAmount);
     

@@ -9,9 +9,16 @@
 
 #include <SDL3/SDL.h>
 
+/* Math defines */
 #define SIGN(X) ((X > 0) - (X < 0))
 #define MAX(X, Y) (X > Y ? X : Y)
 
+/* Colors */
+/**
+ * \struct Cana\_Color
+ *
+ * Temporary struct holding color values
+ */
 struct Cana_Color
 {
     Uint32 black;
@@ -24,7 +31,11 @@ struct Cana_Color
     Uint32 yellow;
 };
 
-struct Cana_Vec2   // change to Cana_Vec2
+/* Vector structures */
+/**
+ * 2D vector struct
+ */
+struct Cana_Vec2
 {
     /* Variables */
     int x, y;
