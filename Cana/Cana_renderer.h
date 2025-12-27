@@ -29,8 +29,10 @@ class Cana_Renderer
 {
 /* Variables */
 private:
-    Cana_Vec2 drawDimensions;
+    int drawWidth;
+    int drawHeight;
     int surfaceLength;
+    float surfaceRatio;
 public:
     SDL_Surface* drawingSurface;
     Uint32* surfacePixels;   // move to private
@@ -64,29 +66,49 @@ public:
      * \param color Color to draw with
      */
     void clear(const Uint32 color);
+    
+    /**
+     * Convert Vec2 from unified to direct
+     *
+     * \param unified 2D vector in unified dimensions
+     * \param bufferX Pointer for width in direct dimensions
+     * \param bufferY Pointer for height in direct dimensions
+     */
+    void unified2buffer(const Cana_Vec2 unified, float* bufferX, float* bufferY);
 
     /**
      * Draw a square with a color on a pixel buffer
      *
-     * Int based. Relative to center.
+     * Int based. Unified dimensions.
      *
      * \param position Position of the square (relative to center)
      * \param size Side length of the square (in pixels)
      * \param color Color
      */
-    void drawSquare(const Cana_Vec2 position, const int size, const Uint32 color);
+    void drawSquare(const Cana_Vec2 position, const float size, const Uint32 color);
 
     /**
      * Draw a line from point A to point B with a color on a pixel buffer
      *
-     * Int based. Relative to top-left.
+     * Int based. Direct dimensions. (size still in pixels)
      *
      * \param pointA Start point
      * \param pointB End point
      * \param color Line color
      * \param pixelAmount Amount of pixels drawn (Less / More)
      */
-    void drawLine(const Cana_Vec2 pointA, const Cana_Vec2 pointB, const Uint32 color, PixelAmount pixelAmount);
+    void drawLine_direct(const Cana_Vec2 pointA, const Cana_Vec2 pointB, const Uint32 color, PixelAmount pixelAmount);
+    /**
+     * Draw a line from point A to point B with a color on a pixel buffer
+     *
+     * Int based. Unified dimensions.
+     *
+     * \param pointA Start point
+     * \param pointB End point
+     * \param color Line color
+     * \param pixelAmount Amount of pixels drawn (Less / More)
+     */
+    void drawLine_unified(const Cana_Vec2 pointA, const Cana_Vec2 pointB, const Uint32 color, PixelAmount pixelAmount);
     
 //    void drawTriangle(Cana_Vec2 pointA, Cana_Vec2 pointB, Cana_Vec2 pointC, Uint32 color);
     

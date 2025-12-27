@@ -41,9 +41,10 @@ public:
     SDL_Renderer* sdl_renderer;
     SDL_Texture* rendererTexture;
     SDL_Surface* windowSurface;
-    int windowLength;
     /* Dimensions */
-    Cana_Vec2 screenDimensions;
+    int window_width;
+    int window_height;
+    int windowLength;
     
 /* Methods */
 private:
@@ -97,7 +98,7 @@ public:
      * \param destinationW Destination buffer width
      * \param ratio FIT or FILL
      */
-    void scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, const int sourceH, const int sourceW, const int destinationH, const int destinationW, const KeepRatio ratio);
+    void scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, const int sourceW, const int sourceH, const int destinationW, const int destinationH, const KeepRatio ratio);
     /**
      * Scale an SDL\_Surface into another SDL\_Surface
      *

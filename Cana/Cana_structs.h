@@ -22,6 +22,7 @@
 struct Cana_Color
 {
     Uint32 black;
+    Uint32 gray;
     Uint32 white;
     Uint32 red;
     Uint32 green;
@@ -38,11 +39,17 @@ struct Cana_Color
 struct Cana_Vec2
 {
     /* Variables */
-    int x, y;
+    float x, y;
     
     /* Methods */
     Cana_Vec2();
-    Cana_Vec2(const int x, const int y);
+    /**
+     * Create a 2D vector
+     */
+    Cana_Vec2(const float x, const float y);
     
-    void set(const int x, const int y);
+    /**
+     * Modify a 2D vector
+     */
+    void set(const float x, const float y);
 };

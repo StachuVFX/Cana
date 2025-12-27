@@ -30,6 +30,7 @@ Cana_Color Cana::mapColors()
 {
     /* Set colors */
     colors.black = SDL_MapRGB(SDL_GetPixelFormatDetails(renderer.drawingSurface->format), NULL, 0, 0, 0);
+    colors.gray = SDL_MapRGB(SDL_GetPixelFormatDetails(renderer.drawingSurface->format), NULL, 63, 63, 63);
     colors.white = SDL_MapRGB(SDL_GetPixelFormatDetails(renderer.drawingSurface->format), NULL, 255, 255, 255);
     colors.red = SDL_MapRGB(SDL_GetPixelFormatDetails(renderer.drawingSurface->format), NULL, 255, 0, 0);
     colors.green = SDL_MapRGB(SDL_GetPixelFormatDetails(renderer.drawingSurface->format), NULL, 0, 255, 0);

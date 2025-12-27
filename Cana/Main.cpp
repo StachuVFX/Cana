@@ -6,22 +6,32 @@
 //
 
 /*
+    Conventions:
+ - dimensions:
+    * unified (signed float, [-1, 1], relative to screen center)
+    * direct (unsinged float or int, relative to top-left corner)
+ 
     Possible optimizations:
  - implement timing to test solution speed
  - inline functions
  - change arguments to references
  
     TODO:
- - add float and double version of Vec2 and drawing functions
- - add conversions betweem local, global and unified dimensions
- - unify dimensions (float [-1, 1] by width)
  - add drawTriangle function
+ - add float (blured/sampled) versions of drawing functions
  - try making Cana handle everything
  - move enums to classes (one day)
  - create Cana_Event class (one day)
  
     DONE:
- - document functions (especially which format of dimensions)
+ - add float version of Vec2
+ - fixed a minor bug in drawSquare()
+ - modified specific screen functions to use their buffer versions
+ - added conversion from unified to direct dimensions
+ - added unified version of drawLine()
+ - added out of bounds protection
+ - change square size from pixels to unified
+ - unify dimensions (float [-1, 1] by width) - all done
 */
 
 //  System Includes
@@ -72,11 +82,11 @@ int main(int argc, char* argv[]) {
         cana.drawingStart();
         
         /* Only draw here */
-        renderer.clear(color.black);
+        renderer.clear(color.gray);
         
-        renderer.drawSquare(Cana_Vec2(0, 0), 70, color.blue);
+        renderer.drawSquare(Cana_Vec2(0, 0), 1.2, color.blue);
 //        renderer.drawTriangle(Cana_Vec2(-30, -30), Cana_Vec2(30, -30), Cana_Vec2(0, 30), color.green);
-        renderer.drawLine(Cana_Vec2(20, 30), Cana_Vec2(100, 60), color.red, PixelAmount_LessPixels);
+        renderer.drawLine_unified(Cana_Vec2(-0.68, 0.25), Cana_Vec2(0.68, -0.25), color.red, PixelAmount_LessPixels);
         
         /* Stop drawing */
         cana.drawingFinish();

@@ -25,10 +25,10 @@ bool Cana_Screen::createWindow(const char* window_name, const int screen_width, 
         return false;
     }
     /* Create texture for the sdl_renderer and window surface */
-    SDL_GetWindowSize(window, &screenDimensions.x, &screenDimensions.y);
-    rendererTexture = SDL_CreateTexture(sdl_renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, screenDimensions.x, screenDimensions.y);
-    windowSurface = SDL_CreateSurface(screenDimensions.x, screenDimensions.y, SDL_PIXELFORMAT_ARGB8888);
-    windowLength = screenDimensions.x * screenDimensions.y;
+    SDL_GetWindowSize(window, &window_width, &window_height);
+    rendererTexture = SDL_CreateTexture(sdl_renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, window_width, window_height);
+    windowSurface = SDL_CreateSurface(window_width, window_height, SDL_PIXELFORMAT_ARGB8888);
+    windowLength = window_width * window_height;
     
     return true;
 }
@@ -36,12 +36,12 @@ bool Cana_Screen::createWindow(const char* window_name, const int screen_width, 
 void Cana_Screen::resizeScreen()
 {
     /* Set window texture and surface again */
-    SDL_GetWindowSize(window, &screenDimensions.x, &screenDimensions.y);
+    SDL_GetWindowSize(window, &window_width, &window_height);
     SDL_DestroyTexture(rendererTexture);
-    rendererTexture = SDL_CreateTexture(sdl_renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, screenDimensions.x, screenDimensions.y);
+    rendererTexture = SDL_CreateTexture(sdl_renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, window_width, window_height);
     SDL_DestroySurface(windowSurface);
-    windowSurface = SDL_CreateSurface(screenDimensions.x, screenDimensions.y, SDL_PIXELFORMAT_ARGB8888);
-    windowLength = screenDimensions.x * screenDimensions.y;
+    windowSurface = SDL_CreateSurface(window_width, window_height, SDL_PIXELFORMAT_ARGB8888);
+    windowLength = window_width * window_height;
 }
 
 void Cana_Screen::copyPixels(Uint32* bufferA, Uint32* bufferB, const int length)
@@ -54,6 +54,7 @@ void Cana_Screen::copyPixels(Uint32* bufferA, Uint32* bufferB, const int length)
 void Cana_Screen::copyPixels(SDL_Surface* surface, SDL_Texture* texture, const int length)
 {
     /* Copy all pixels from surface to texture */
+    /*    Using buffer version of copyPixels */
     SDL_LockSurface(surface);
     Uint32* surfacePixels = (Uint32*)surface->pixels;
     
@@ -61,16 +62,13 @@ void Cana_Screen::copyPixels(SDL_Surface* surface, SDL_Texture* texture, const i
     int texturePitch;
     SDL_LockTexture(texture, nullptr, (void**)&texturePixels, &texturePitch);
     
-//    Cana_copyPixels(surfacePixels, texturePixels, length);
-    for (int i = 0; i < length; i++) {
-        texturePixels[i] = surfacePixels[i];
-    }
+    copyPixels(surfacePixels, texturePixels, length);
     
     SDL_UnlockTexture(texture);
     SDL_UnlockSurface(surface);
 }
 
-void Cana_Screen::scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, const int sourceH, const int sourceW, const int destinationH, const int destinationW, const KeepRatio ratio)
+void Cana_Screen::scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, const int sourceW, const int sourceH, const int destinationW, const int destinationH, const KeepRatio ratio)
 {
     /* Scale all pixels from sourcePixels to destinationPixels */
     /*    - int based, no float, no blur */
@@ -133,69 +131,12 @@ void Cana_Screen::scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, c
 void Cana_Screen::scalePixels(SDL_Surface* source, SDL_Surface* destination, const KeepRatio ratio)
 {
     /* Scale all pixels from source surface to destination surface */
-    /*    - int based, no float, no blur */
+    /*    Using buffer version of scalePixels() */
     SDL_LockSurface(source);
     SDL_LockSurface(destination);
 
-    Uint32* sourcePixels = (Uint32*)source->pixels;
-    Uint32* destinationPixels = (Uint32*)destination->pixels;
-
-    int fitToHeight = 1;
-//    float sh = (float)source->h;
-//    float dh = (float)destination->h;
-//    float sw = (float)source->w;
-//    float dw = (float)destination->w;
-    float hScale = (float)source->h / (float)destination->h;
-    float wScale = (float)source->w / (float)destination->w;
-    switch (ratio)
-    {
-    case KeepRatio_Fit:
-        if (wScale > hScale) {
-            fitToHeight = 0;
-        }
-                // probably can be optimized
-        switch (fitToHeight)
-        {
-        case 1:
-            for (int i = 0; i < destination->h; i++) {
-                for (int j = 0; j < destination->w * (wScale / hScale); j++) {
-                    int targetH = i * hScale;
-                    int wShift = (1 - (wScale / hScale)) * destination->w / 2;
-                    int targetW = j * hScale;
-                    destinationPixels[i * destination->w + j + wShift] = sourcePixels[targetH * source->w + targetW];
-                }
-            }
-            break;
-        case 0:
-            for (int i = 0; i < destination->h * (hScale / wScale); i++) {
-                for (int j = 0; j < destination->w; j++) {
-                    int targetH = i * wScale;
-                    int hShift = (1 - (hScale / wScale)) * destination->h / 2;
-                    int targetW = j * wScale;
-                    destinationPixels[(i + hShift) * destination->w + j] = sourcePixels[targetH * source->w + targetW];
-                }
-            }
-            break;
-        default:
-            break;
-        }
-        break;
-    case KeepRatio_Fill:
-                    // can be optimized
-        for (int  i = 0; i < destination->h; i++) {
-            for (int j = 0; j < destination->w; j++) {
-                float hScale = (float)source->h / (float)destination->h;
-                float wScale = (float)source->w / (float)destination->w;
-                int targetH = i * hScale;
-                int targetW = j * wScale;
-                destinationPixels[i * destination->w + j] = sourcePixels[targetH * source->w + targetW];
-            }
-        }
-        break;
-    default:
-        break;
-    }
-
+    scalePixels((Uint32*)source->pixels, (Uint32*)destination->pixels, source->w, source->h, destination->w, destination->h, ratio);
+    
     SDL_UnlockSurface(source);
     SDL_UnlockSurface(destination);
 }
