@@ -22,18 +22,19 @@
  - change arguments to references
  
     TODO:
+ - add 3D
  - add blured/sampled versions of screen functions
  - add float (blured/sampled) versions of drawing functions
  - try making Cana handle everything
  - move enums to classes (one day)
  - create Cana_Event class (one day)
+ - optimize drawing functions (one day)
+ - set drawing reference ([-1, 1]) to lower dimension (maybe)
  
     DONE:
- - moved line pixelAmount from unified function args to a define
-    * only left pixelAmount changable in drawLine_direct
- - add drawTriangle function (version 2 not 3 because I'm lazy)
-    * decided to use less pixels on triangle sides, but more on the lines between
- - updated documentation
+ - fixed an out of bounds bug in scalePixels (while scaled from a higher width ratio)
+    * there was an inaccurate float division result in hScale definition
+    * fixed by parsing computation result in for loop condition to int
 */
 
 //  System Includes
@@ -50,8 +51,8 @@
 //  Defines
 #define SCREEN_WIDTH 1440
 #define SCREEN_HEIGHT 900
-#define DRAW_WIDTH 800
-#define DRAW_HEIGHT 600
+#define DRAW_WIDTH 1280
+#define DRAW_HEIGHT 720
 
 //  Structs
 
@@ -86,9 +87,12 @@ int main(int argc, char* argv[]) {
         /* Only draw here */
         renderer.clear(color.gray);
         
-        renderer.drawSquare(Cana_Vec2(0, 0), 1.2, color.blue);
-        renderer.drawTriangle_unified(Cana_Vec2(-0.7, -0.50), Cana_Vec2(0.7, -0.50), Cana_Vec2(0, 0.7), color.green);
-        renderer.drawLine_unified(Cana_Vec2(-0.68, 0.25), Cana_Vec2(0.68, -0.25), color.red);
+//        renderer.drawSquare(Cana_Vec2(0, 0), 1.2, color.blue);
+//        renderer.drawTriangle_unified(Cana_Vec2(-0.7, -0.50), Cana_Vec2(0.7, -0.50), Cana_Vec2(0, 0.7), color.green);
+//        renderer.drawLine_unified(Cana_Vec2(-0.68, 0.25), Cana_Vec2(0.68, -0.25), color.red);
+        renderer.drawSquare(Cana_Vec2(0, 0), 0.6, color.blue);
+        renderer.drawTriangle_unified(Cana_Vec2(-0.35, -0.25), Cana_Vec2(0.35, -0.25), Cana_Vec2(0, 0.35), color.green);
+        renderer.drawLine_unified(Cana_Vec2(-0.34, 0.12), Cana_Vec2(0.34, -0.12), color.red);
         
         /* Stop drawing */
         cana.drawingFinish();

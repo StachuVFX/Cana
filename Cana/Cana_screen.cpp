@@ -5,6 +5,10 @@
 //  Created by Stachu on 15.12.2025.
 //
 
+//#include <iostream>   // temporary
+//
+//#define LOG_POSITION(A, B, C, D) std::cout << "Out of bounds position: " << " " << A << ", " << B << " - " << C << ", " << D << std::endl
+
 #include "Cana_screen.h"
 
 bool Cana_Screen::createWindow(const char* window_name, const int screen_width, const int screen_height, const WindowType window_type)
@@ -90,7 +94,7 @@ void Cana_Screen::scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, c
         {
         case 1:
             for (int i = 0; i < destinationH; i++) {
-                for (int j = 0; j < destinationW * (wScale / hScale); j++) {
+                for (int j = 0; j < (int)(destinationW * (wScale / hScale)); j++) {
                     int targetH = i * hScale;
                     int wShift = (1 - (wScale / hScale)) * destinationW / 2;
                     int targetW = j * hScale;
@@ -99,11 +103,17 @@ void Cana_Screen::scalePixels(Uint32* sourcePixels, Uint32* destinationPixels, c
             }
             break;
         case 0:
-            for (int i = 0; i < destinationH * (hScale / wScale); i++) {
+            for (int i = 0; i < (int)(destinationH * (hScale / wScale)); i++) {
                 for (int j = 0; j < destinationW; j++) {
                     int targetH = i * wScale;
                     int hShift = (1 - (hScale / wScale)) * destinationH / 2;
                     int targetW = j * wScale;
+//                    /* temporary out of bounds protection and debug */
+//                    if ( (targetH < 0 || targetH > (sourceH - 1)) || (targetW < 0 || targetW > (sourceW - 1)) ) {
+//                        LOG_POSITION(j, i, targetW, targetH);
+//                        destinationPixels[(i + hShift) * destinationW + j] = SDL_MapRGB(SDL_GetPixelFormatDetails(windowSurface->format), NULL, 255, 255, 255);
+//                        continue;
+//                    }
                     destinationPixels[(i + hShift) * destinationW + j] = sourcePixels[targetH * sourceW + targetW];
                 }
             }
