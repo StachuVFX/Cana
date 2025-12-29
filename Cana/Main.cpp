@@ -10,6 +10,11 @@
  - dimensions:
     * unified (signed float, [-1, 1], relative to screen center)
     * direct (unsinged float or int, relative to top-left corner)
+ - drawTriangle versions:
+    * 1. Lines from one vertex to all points on the opposite side - missing points towards the side edge
+    * 2. Lines between two sides, simultanous (starting from one vertex, ending at the other vertices at the same time) - inefficient
+    * 3. Only horizontal lines, phased (starting from top vertex, ending at bottom vertex, 2 phases divided by the middle vertex) - efficient
+    * 4. Using straight line relative equations and comparisons - probably inefficient
  
     Possible optimizations:
  - implement timing to test solution speed
@@ -17,21 +22,18 @@
  - change arguments to references
  
     TODO:
- - add drawTriangle function
+ - add blured/sampled versions of screen functions
  - add float (blured/sampled) versions of drawing functions
  - try making Cana handle everything
  - move enums to classes (one day)
  - create Cana_Event class (one day)
  
     DONE:
- - add float version of Vec2
- - fixed a minor bug in drawSquare()
- - modified specific screen functions to use their buffer versions
- - added conversion from unified to direct dimensions
- - added unified version of drawLine()
- - added out of bounds protection
- - change square size from pixels to unified
- - unify dimensions (float [-1, 1] by width) - all done
+ - moved line pixelAmount from unified function args to a define
+    * only left pixelAmount changable in drawLine_direct
+ - add drawTriangle function (version 2 not 3 because I'm lazy)
+    * decided to use less pixels on triangle sides, but more on the lines between
+ - updated documentation
 */
 
 //  System Includes
@@ -48,8 +50,8 @@
 //  Defines
 #define SCREEN_WIDTH 1440
 #define SCREEN_HEIGHT 900
-#define DRAW_WIDTH 120
-#define DRAW_HEIGHT 90
+#define DRAW_WIDTH 800
+#define DRAW_HEIGHT 600
 
 //  Structs
 
@@ -85,8 +87,8 @@ int main(int argc, char* argv[]) {
         renderer.clear(color.gray);
         
         renderer.drawSquare(Cana_Vec2(0, 0), 1.2, color.blue);
-//        renderer.drawTriangle(Cana_Vec2(-30, -30), Cana_Vec2(30, -30), Cana_Vec2(0, 30), color.green);
-        renderer.drawLine_unified(Cana_Vec2(-0.68, 0.25), Cana_Vec2(0.68, -0.25), color.red, PixelAmount_LessPixels);
+        renderer.drawTriangle_unified(Cana_Vec2(-0.7, -0.50), Cana_Vec2(0.7, -0.50), Cana_Vec2(0, 0.7), color.green);
+        renderer.drawLine_unified(Cana_Vec2(-0.68, 0.25), Cana_Vec2(0.68, -0.25), color.red);
         
         /* Stop drawing */
         cana.drawingFinish();

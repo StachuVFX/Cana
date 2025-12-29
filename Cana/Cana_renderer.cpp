@@ -7,6 +7,8 @@
 
 #include "Cana_renderer.h"
 
+#define LINE_PIXEL_AMOUNT PixelAmount_LessPixels
+
 /* Cana_Renderer */
 void Cana_Renderer::createDrawingSurface(const int surface_width, const int surface_height)
 {
@@ -40,7 +42,7 @@ void Cana_Renderer::clear(const Uint32 color)
     }
 }
 
-void Cana_Renderer::unified2buffer(const Cana_Vec2 unified, float* bufferX, float* bufferY)
+void Cana_Renderer::unified2direct(const Cana_Vec2 unified, float* bufferX, float* bufferY)
 {
     /* Can be optimized */
     *bufferX = (float)drawWidth / 2.0 + unified.x * (float)drawWidth / 2.0;
@@ -102,15 +104,83 @@ void Cana_Renderer::drawLine_direct(const Cana_Vec2 pointA, const Cana_Vec2 poin
     }
 }
 
-void Cana_Renderer::drawLine_unified(const Cana_Vec2 pointA, const Cana_Vec2 pointB, const Uint32 color, const PixelAmount pixelAmount)
+void Cana_Renderer::drawLine_unified(const Cana_Vec2 pointA, const Cana_Vec2 pointB, const Uint32 color)
 {
     Cana_Vec2 directPointA;
     Cana_Vec2 directPointB;
     
-    unified2buffer(pointA, &(directPointA.x), &(directPointA.y));
-    unified2buffer(pointB, &(directPointB.x), &(directPointB.y));
+    unified2direct(pointA, &(directPointA.x), &(directPointA.y));
+    unified2direct(pointB, &(directPointB.x), &(directPointB.y));
     
-    drawLine_direct(directPointA, directPointB, color, pixelAmount);
+    drawLine_direct(directPointA, directPointB, color, LINE_PIXEL_AMOUNT);
+}
+
+void Cana_Renderer::drawTriangle_direct(Cana_Vec2 pointA, Cana_Vec2 pointB, Cana_Vec2 pointC, Uint32 color)
+{
+    /*    Phase 1 - Setup */
+    /* Line AB */
+    int lineABWidth = pointB.x - pointA.x;
+    int widthSignAB = SIGN(lineABWidth);
+    lineABWidth *= widthSignAB;
+    
+    int lineABHeight = pointB.y - pointA.y;
+    int heightSignAB = SIGN(lineABHeight);
+    lineABHeight *= heightSignAB;
+    
+    /* Line AC */
+    int lineACWidth = pointC.x - pointA.x;
+    int widthSignAC = SIGN(lineACWidth);
+    lineACWidth *= widthSignAC;
+    
+    int lineACHeight = pointC.y - pointA.y;
+    int heightSignAC = SIGN(lineACHeight);
+    lineACHeight *= heightSignAC;
+    
+    /* Specific pixel amount */
+    PixelAmount trianglePixelAmount = PixelAmount_LessPixels;
+    
+    /* Longer line */
+    int linePixelLength;
+    switch (trianglePixelAmount) {
+        case PixelAmount_MorePixels:
+            linePixelLength = MAX(lineABWidth + lineABHeight, lineACWidth + lineACHeight);
+            break;
+        case PixelAmount_LessPixels:
+            linePixelLength = MAX(MAX(lineABWidth, lineABHeight), MAX(lineACWidth, lineACHeight));
+            break;
+        default:
+            break;
+    }
+    /* Phase 2 - Going through lines */
+    for (int i = 0; i < linePixelLength; i++) {
+        /* Line AB */
+        int localABH = lineABHeight * i / linePixelLength;
+        int localABW = lineABWidth * i / linePixelLength;
+        int globalABH = pointA.y + localABH * heightSignAB;
+        int globalABW = pointA.x + localABW * widthSignAB;
+        
+        /* Line AC */
+        int localACH = lineACHeight * i / linePixelLength;
+        int localACW = lineACWidth * i / linePixelLength;
+        int globalACH = pointA.y + localACH * heightSignAC;
+        int globalACW = pointA.x + localACW * widthSignAC;
+        
+        /* Drawing lines */
+        drawLine_direct(Cana_Vec2(globalABW, globalABH), Cana_Vec2(globalACW, globalACH), color, PixelAmount_MorePixels);
+    }
+}
+
+void Cana_Renderer::drawTriangle_unified(Cana_Vec2 pointA, Cana_Vec2 pointB, Cana_Vec2 pointC, Uint32 color)
+{
+    Cana_Vec2 directPointA;
+    Cana_Vec2 directPointB;
+    Cana_Vec2 directPointC;
+    
+    unified2direct(pointA, &(directPointA.x), &(directPointA.y));
+    unified2direct(pointB, &(directPointB.x), &(directPointB.y));
+    unified2direct(pointC, &(directPointC.x), &(directPointC.y));
+    
+    drawTriangle_direct(directPointA, directPointB, directPointC, color);
 }
 
 void Cana_Renderer::quit()
