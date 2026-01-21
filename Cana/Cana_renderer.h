@@ -9,6 +9,7 @@
 
 #include <SDL3/SDL.h>
 #include "Cana_structs.h"
+#include "Cana_objects.h"
 
 /* Enums */
 /**
@@ -136,6 +137,23 @@ public:
      * \param color Triangle color
      */
     void drawTriangle_unified(Cana_Vec2 pointA, Cana_Vec2 pointB, Cana_Vec2 pointC, Uint32 color);
+    
+    /**
+     * Draw an object as triangles
+     *
+     * \param drawable Cana\_Drawable2 object
+     *
+     * Drawable has to go by reference, otherwise its destructor will attempt to free VAO twice
+     */
+    void drawObject_triangles(Cana_Drawable2& drawable, Uint32 color);
+    /**
+     * Draw an object as lines
+     *
+     * \param drawable Cana\_Drawable2 object
+     *
+     * Drawable has to go by reference, otherwise its destructor will attempt to free VAO twice
+     */
+    void drawObject_lines(Cana_Drawable2& drawable, Uint32 color);
     
     /**
      * Quit renderer

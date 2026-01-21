@@ -183,6 +183,37 @@ void Cana_Renderer::drawTriangle_unified(Cana_Vec2 pointA, Cana_Vec2 pointB, Can
     drawTriangle_direct(directPointA, directPointB, directPointC, color);
 }
 
+void Cana_Renderer::drawObject_triangles(Cana_Drawable2& drawable, Uint32 color)
+{
+    const Cana_VertexArrayObject2* vao = drawable.getVertexArrayObject();
+    const Cana_Vec2* vertices = vao->getVertices();
+    const Cana_Vec3_int* indices = vao->getIndices();
+    
+    for (int i = 0; i < vao->getIndexCount(); i++) {
+        Cana_Vec2 pointA = vertices[indices[i].x];
+        Cana_Vec2 pointB = vertices[indices[i].y];
+        Cana_Vec2 pointC = vertices[indices[i].z];
+        pointA.multiply(drawable.getScale());
+        pointB.multiply(drawable.getScale());
+        pointC.multiply(drawable.getScale());
+        drawTriangle_unified(pointA, pointB, pointC, color);
+    }
+}
+void Cana_Renderer::drawObject_lines(Cana_Drawable2& drawable, Uint32 color)
+{
+    const Cana_VertexArrayObject2* vao = drawable.getVertexArrayObject();
+    const Cana_Vec2* vertices = vao->getVertices();
+    const Cana_Vec2_int* indices = vao->getOutlineIndices();
+    
+    for (int i = 0; i < vao->getOutlineIndexCount(); i++) {
+        Cana_Vec2 pointA = vertices[indices[i].x];
+        Cana_Vec2 pointB = vertices[indices[i].y];
+        pointA.multiply(drawable.getScale());
+        pointB.multiply(drawable.getScale());
+        drawLine_unified(pointA, pointB, color);
+    }
+}
+
 void Cana_Renderer::quit()
 {
     /* Cleaning */
