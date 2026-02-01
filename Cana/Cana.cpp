@@ -19,9 +19,10 @@ void Cana::createWindow(const char* window_name, const int screen_width, const i
     running = screen.createWindow(window_name, screen_width, screen_height, window_type);
 }
 
-Cana_Renderer Cana::createRenderer(const int surface_width, const int surface_height)
+Cana_Renderer Cana::createRenderer(const int surface_width, const int surface_height, const int fov)
 {
     /* Create drawing surface */
+    renderer.fov = fov;
     renderer.createDrawingSurface(surface_width, surface_height);
     return renderer;
 }

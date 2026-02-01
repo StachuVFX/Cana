@@ -70,9 +70,11 @@ public:
 };
 
 /**
- * 2D drawable class interface
+ * 2D drawable class
  *
  * Base class for any drawable 2D object
+ *
+ * Can't be instantiated
  */
 class Cana_Drawable2 {
 /* Member variables */

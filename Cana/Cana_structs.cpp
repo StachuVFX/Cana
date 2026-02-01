@@ -16,6 +16,11 @@ void Cana_Vec2::set(const float X, const float Y)
     x = X;
     y = Y;
 }
+void Cana_Vec2::add(const Cana_Vec2 vector)
+{
+    x += vector.x;
+    y += vector.y;
+}
 void Cana_Vec2::multiply(const float factor)
 {
     x *= factor;
@@ -40,6 +45,12 @@ void Cana_Vec3::set(const float X, const float Y, const float Z)
     x = X;
     y = Y;
     z = Z;
+}
+void Cana_Vec3::add(const Cana_Vec3 vector)
+{
+    x += vector.x;
+    y += vector.y;
+    z += vector.z;
 }
 void Cana_Vec3::multiply(const float factor)
 {

@@ -214,6 +214,37 @@ void Cana_Renderer::drawObject_lines(Cana_Drawable2& drawable, Uint32 color)
     }
 }
 
+Cana_Vec2 Cana_Renderer::projectVertex(Cana_Vec3 vertex)
+{
+    float viewAngleVertexDepth = -1.0f * ( 1.0f * 1.0f / tan(RAD(fov / 2.0f)) );
+    Cana_Vec2 point( (-viewAngleVertexDepth * vertex.x) / (vertex.z - viewAngleVertexDepth),
+                    (-viewAngleVertexDepth * vertex.y) / (vertex.z - viewAngleVertexDepth) );
+    
+    return point;
+}
+
+void Cana_Renderer::draw3D_lines(Cana_Drawable3& drawable, Uint32 color)
+{
+    const Cana_VertexArrayObject3* vao = drawable.getVertexArrayObject();
+    const Cana_Vec3* vertices = vao->getVertices();
+    const Cana_Vec2_int* indices = vao->getOutlineIndices();
+    
+    for (int i = 0; i < vao->getOutlineIndexCount(); i++) {
+        Cana_Vec3 vertexA = vertices[indices[i].x];
+        Cana_Vec3 vertexB = vertices[indices[i].y];
+        vertexA.multiply(drawable.getScale());
+        vertexB.multiply(drawable.getScale());
+        
+        vertexA.add(drawable.getPosition());
+        vertexB.add(drawable.getPosition());
+        
+        Cana_Vec2 pointA = projectVertex(vertexA);      // here !!!
+        Cana_Vec2 pointB = projectVertex(vertexB);
+//        
+        drawLine_unified(pointA, pointB, color);
+    }
+}
+
 void Cana_Renderer::quit()
 {
     /* Cleaning */

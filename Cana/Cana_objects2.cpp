@@ -5,7 +5,7 @@
 //  Created by Stachu on 29.12.2025.
 //
 
-#include "Cana_objects.h"
+#include "Cana_objects2.h"
 
 /* Cana_VertexArrayObject2 */
     /* Constructors */

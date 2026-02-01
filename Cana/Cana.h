@@ -42,7 +42,7 @@ public:
     /**
      * Create a renderer
      */
-    Cana_Renderer createRenderer(const int surface_width, const int surface_height);
+    Cana_Renderer createRenderer(const int surface_width, const int surface_height, const int fov);
     
     /**
      * Map colors

@@ -52,6 +52,11 @@ struct Cana_Vec2
     void set(const float x, const float y);
     
     /**
+     * Add a 2D vector to this 2D vector
+     */
+    void add(const Cana_Vec2 vector);
+    
+    /**
      * Multiply a 2D vector by a constant factor
      */
     void multiply(const float factor);
@@ -95,6 +100,11 @@ struct Cana_Vec3
      * Modify a 3D vector
      */
     void set(const float x, const float y, const float z);
+    
+    /**
+     * Add a 3D vector to this 3D vector
+     */
+    void add(const Cana_Vec3 vector);
     
     /**
      * Multiply a 3D vector by a constant factor

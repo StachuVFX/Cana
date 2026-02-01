@@ -21,11 +21,8 @@
  - inline functions
  - change arguments to references
  
-    TODO:
+    TODO:   // next in rederer
  - add 3D
-    * add vertex array class
-    * add drawable class hierarchy
-    * add conversion from 3D to 2D
     * add functions to draw all lines or triangles
  - add blured/sampled versions of screen functions
  - add float (blured/sampled) versions of drawing functions
@@ -36,15 +33,11 @@
  - set drawing reference ([-1, 1]) to lower dimension (maybe)
  
     DONE:
- - add 2D
-    * added vertex array class
-    * added drawable class hierarchy
-        - drawable
-            * primitive
-                - square
-                - equal-arm triangle
-            * object
-    * add functions to draw all lines or triangles
+ - add 3D
+    * add vertex array class
+    * add drawable class hierarchy
+    * add conversion from 3D to 2D
+ 
 */
 
 //  System Includes
@@ -63,6 +56,7 @@
 #define SCREEN_HEIGHT 900
 #define DRAW_WIDTH 400
 #define DRAW_HEIGHT 300
+#define FOV 90
 
 //  Structs
 
@@ -76,7 +70,7 @@ int main(int argc, char* argv[]) {
     Cana cana("Cana Test", "0.1.2", "name.stachu.Cana");
     /* Screen and renderer */
     cana.createWindow("Cana Test", SCREEN_WIDTH, SCREEN_HEIGHT, WindowType_Fullscreen);
-    Cana_Renderer renderer = cana.createRenderer(DRAW_WIDTH, DRAW_HEIGHT);
+    Cana_Renderer renderer = cana.createRenderer(DRAW_WIDTH, DRAW_HEIGHT, FOV);
     
 /* Game setup */
     /* Colors */
@@ -105,15 +99,16 @@ int main(int argc, char* argv[]) {
 //        renderer.drawTriangle_unified(Cana_Vec2(-0.35, -0.25), Cana_Vec2(0.35, -0.25), Cana_Vec2(0, 0.35), color.green);
 //        renderer.drawLine_unified(Cana_Vec2(-0.34, 0.12), Cana_Vec2(0.34, -0.12), color.red);
 //
-        Cana_Square square1(Cana_Vec2(0.0f, 0.0f), 0.6f);
-//        renderer.drawObject_triangles(square1, color.blue);
-        renderer.drawObject_lines(square1, color.white);
-        
-        Cana_EqualArmTriangle triangle1(Cana_Vec2(0.0f, 0.0f), 0.5f);
-//        renderer.drawObject_triangles(triangle1, color.green);
-        renderer.drawObject_lines(triangle1, color.white);
-        
-        renderer.drawLine_unified(Cana_Vec2(-0.34, 0.12), Cana_Vec2(0.34, -0.12), color.white);
+//        Cana_Square square1(Cana_Vec2(0.0f, 0.0f), 0.6f);
+////        renderer.drawObject_triangles(square1, color.blue);
+//        renderer.drawObject_lines(square1, color.white);
+//        Cana_EqualArmTriangle triangle1(Cana_Vec2(0.0f, 0.0f), 0.5f);
+////        renderer.drawObject_triangles(triangle1, color.green);
+//        renderer.drawObject_lines(triangle1, color.white);
+//        renderer.drawLine_unified(Cana_Vec2(-0.34, 0.12), Cana_Vec2(0.34, -0.12), color.white);
+//
+        Cana_Box box1(Cana_Vec3(-1.4f, 0.8f, 1.0f), 1.0f);
+        renderer.draw3D_lines(box1, color.white);
         
         /* Stop drawing */
         cana.drawingFinish();

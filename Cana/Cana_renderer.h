@@ -9,7 +9,13 @@
 
 #include <SDL3/SDL.h>
 #include "Cana_structs.h"
-#include "Cana_objects.h"
+#include "Cana_objects2.h"
+#include "Cana_objects3.h"
+
+#include <math.h>
+
+#define PI 3.1415f
+#define RAD(DEG) (DEG * PI / 180)
 
 /* Enums */
 /**
@@ -35,6 +41,7 @@ private:
     int surfaceLength;
     float surfaceRatio;
 public:
+    int fov;
     SDL_Surface* drawingSurface;
     Uint32* surfacePixels;   // move to private
 /* Methods */
@@ -154,6 +161,22 @@ public:
      * Drawable has to go by reference, otherwise its destructor will attempt to free VAO twice
      */
     void drawObject_lines(Cana_Drawable2& drawable, Uint32 color);
+    
+    /**
+     * Project a 3D vertex onto the screen
+     *
+     * \param vertex The vertex to be projected
+     * \return Point on the screen projected from the vertex
+     */
+    Cana_Vec2 projectVertex(Cana_Vec3 vertex);
+    /**
+     * Draw a 3D object as lines
+     *
+     * \param drawable Cana\_Drawable3 object
+     *
+     * Drawable has to go by reference, otherwise its destructor will attempt to free VAO twice
+     */
+    void draw3D_lines(Cana_Drawable3& drawable, Uint32 color);
     
     /**
      * Quit renderer
