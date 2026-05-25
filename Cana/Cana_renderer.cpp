@@ -8,6 +8,10 @@
 #include "Cana_renderer.h"
 
 #define LINE_PIXEL_AMOUNT PixelAmount_LessPixels
+#define FOV 90
+
+#define PI 3.14159265359
+#define RAD(X) X * PI / 180
 
 /* Cana_Renderer */
 void Cana_Renderer::createDrawingSurface(const int surface_width, const int surface_height)
@@ -20,6 +24,9 @@ void Cana_Renderer::createDrawingSurface(const int surface_width, const int surf
     surfacePixels = (Uint32*)drawingSurface->pixels; /* (assign only to remember how, the surface is not locked anyway) */
     surfaceLength = surface_width * surface_height;
     surfaceRatio = (float)surface_height / (float)surface_width;
+    /* Set up 3D */
+    fov = FOV;
+    zV = -1 / SDL_tanf(RAD(fov / 2.0f));
 }
 
 void Cana_Renderer::drawingStart()
@@ -53,13 +60,13 @@ void Cana_Renderer::drawSquare(const Cana_Vec2 position, const float size, const
 {
     int directSize = size * (float)drawWidth / 2.0;
     for (int i = 0; i < directSize; i++) {
-        int targetH = drawHeight / 2 - position.y - (directSize / 2) + i;
+        int targetH = drawHeight / 2 - position.y * drawWidth / 2 - (directSize / 2) + i;
         /* Out of bounds protection (height) */
         if (targetH < 0 || targetH > (drawHeight - 1)) {
             continue;
         }
         for (int j = 0; j < directSize; j++) {
-            int targetW = drawWidth / 2 + position.x - (directSize / 2) + j;
+            int targetW = drawWidth / 2 + position.x * drawWidth / 2 - (directSize / 2) + j;
             /* Out of bounds protection (width) */
             if (targetW < 0 || targetW > (drawWidth - 1)) {
                 continue;
@@ -181,6 +188,15 @@ void Cana_Renderer::drawTriangle_unified(Cana_Vec2 pointA, Cana_Vec2 pointB, Can
     unified2direct(pointC, &(directPointC.x), &(directPointC.y));
     
     drawTriangle_direct(directPointA, directPointB, directPointC, color);
+}
+
+void Cana_Renderer::draw3dPoint_unified(Cana_Vec3 point3d, Uint32 color)
+{
+    Cana_Vec2 point2d;
+    point2d.x = (-zV * point3d.x) / (point3d.z - zV);
+    point2d.y = (-zV * point3d.y) / (point3d.z - zV);
+    
+    drawSquare(point2d, 0.01f, color);
 }
 
 void Cana_Renderer::quit()

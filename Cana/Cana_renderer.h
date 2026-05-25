@@ -33,6 +33,9 @@ private:
     int drawHeight;
     int surfaceLength;
     float surfaceRatio;
+    /* 3D */
+    float fov;
+    float zV;
 public:
     SDL_Surface* drawingSurface;
     Uint32* surfacePixels;   // move to private
@@ -82,7 +85,7 @@ public:
      * Int based. Unified dimensions.
      *
      * \param position Position of the square (relative to center)
-     * \param size Side length of the square (in pixels)
+     * \param size Side length of the square (in screen widths)
      * \param color Color
      */
     void drawSquare(const Cana_Vec2 position, const float size, const Uint32 color);
@@ -136,6 +139,16 @@ public:
      * \param color Triangle color
      */
     void drawTriangle_unified(Cana_Vec2 pointA, Cana_Vec2 pointB, Cana_Vec2 pointC, Uint32 color);
+    
+    /**
+     * Draw a 3D point using a small square with a color
+     *
+     * Int based. Unified dimensions.
+     *
+     * \param point3d 3D point
+     * \param color Triangle color
+     */
+    void draw3dPoint_unified(Cana_Vec3 point3d, Uint32 color);
     
     /**
      * Quit renderer

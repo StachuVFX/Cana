@@ -53,3 +53,23 @@ struct Cana_Vec2
      */
     void set(const float x, const float y);
 };
+/**
+ * 3D vector struct
+ */
+struct Cana_Vec3
+{
+    /* Variables */
+    float x, y, z;
+    
+    /* Methods */
+    Cana_Vec3();
+    /**
+     * Create a 3D vector
+     */
+    Cana_Vec3(const float x, const float y, const float z);
+    
+    /**
+     * Modify a 3D vector
+     */
+    void set(const float x, const float y, const float z);
+};

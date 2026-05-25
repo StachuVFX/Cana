@@ -7,6 +7,8 @@
 
 #include "Cana.h"
 
+#define KEEP_RATIO KeepRatio_Fit
+
 Cana::Cana(const char* program_name, const char* program_version, const char* product_identifier)
 {
     /* Set up SDL app metadata */
@@ -81,7 +83,7 @@ void Cana::drawingFinish()
 void Cana::scale()
 {
     /* Scale drawing surface to window surface */
-    screen.scalePixels(renderer.drawingSurface, screen.windowSurface, KeepRatio_Fit);
+    screen.scalePixels(renderer.drawingSurface, screen.windowSurface, KEEP_RATIO);
 }
 
 void Cana::swap()

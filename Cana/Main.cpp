@@ -22,7 +22,6 @@
  - change arguments to references
  
     TODO:
- - add 3D
  - add blured/sampled versions of screen functions
  - add float (blured/sampled) versions of drawing functions
  - try making Cana handle everything
@@ -32,18 +31,16 @@
  - set drawing reference ([-1, 1]) to lower dimension (maybe)
  
     DONE:
- - fixed an out of bounds bug in scalePixels (while scaled from a higher width ratio)
-    * there was an inaccurate float division result in hScale definition
-    * fixed by parsing computation result in for loop condition to int
+ - move SDL includes to Cana.h
+ - small fixes
+ - add 3D (perfect unified point projection)
 */
 
 //  System Includes
 #include <iostream>
 #include <thread>
 
-//  SDL Includes
-#include <SDL3/SDL.h>
-#include <SDL3/SDL_main.h>
+//  SDL Includes (not needed anymore - all in Cana.h)
 
 //  Custom Includes
 #include "Cana.h"
@@ -87,12 +84,18 @@ int main(int argc, char* argv[]) {
         /* Only draw here */
         renderer.clear(color.gray);
         
-//        renderer.drawSquare(Cana_Vec2(0, 0), 1.2, color.blue);
-//        renderer.drawTriangle_unified(Cana_Vec2(-0.7, -0.50), Cana_Vec2(0.7, -0.50), Cana_Vec2(0, 0.7), color.green);
-//        renderer.drawLine_unified(Cana_Vec2(-0.68, 0.25), Cana_Vec2(0.68, -0.25), color.red);
-        renderer.drawSquare(Cana_Vec2(0, 0), 0.6, color.blue);
-        renderer.drawTriangle_unified(Cana_Vec2(-0.35, -0.25), Cana_Vec2(0.35, -0.25), Cana_Vec2(0, 0.35), color.green);
-        renderer.drawLine_unified(Cana_Vec2(-0.34, 0.12), Cana_Vec2(0.34, -0.12), color.red);
+//        renderer.drawSquare(Cana_Vec2(0, 0), 0.6, color.blue);
+//        renderer.drawTriangle_unified(Cana_Vec2(-0.35, -0.25), Cana_Vec2(0.35, -0.25), Cana_Vec2(0, 0.35), color.green);
+//        renderer.drawLine_unified(Cana_Vec2(-0.34, 0.12), Cana_Vec2(0.34, -0.12), color.red);
+        //
+        renderer.draw3dPoint_unified(Cana_Vec3(-1.0f, -0.56f, 0.01f), color.white);
+        renderer.draw3dPoint_unified(Cana_Vec3( 1.0f, -0.56f, 0.01f), color.white);
+        renderer.draw3dPoint_unified(Cana_Vec3( 1.0f,  0.56f, 0.01f), color.white);
+        renderer.draw3dPoint_unified(Cana_Vec3(-1.0f,  0.56f, 0.01f), color.white);
+        renderer.draw3dPoint_unified(Cana_Vec3(-1.0f, -0.56f, 1.01f), color.white);
+        renderer.draw3dPoint_unified(Cana_Vec3( 1.0f, -0.56f, 1.01f), color.white);
+        renderer.draw3dPoint_unified(Cana_Vec3( 1.0f,  0.56f, 1.01f), color.white);
+        renderer.draw3dPoint_unified(Cana_Vec3(-1.0f,  0.56f, 1.01f), color.white);
         
         /* Stop drawing */
         cana.drawingFinish();
