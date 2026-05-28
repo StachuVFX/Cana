@@ -8,7 +8,7 @@
 #include "Cana_renderer.h"
 
 #define LINE_PIXEL_AMOUNT PixelAmount_LessPixels
-#define FOV 90
+#define FOV 85
 
 #define PI 3.14159265359
 #define RAD(X) X * PI / 180
@@ -54,6 +54,16 @@ void Cana_Renderer::unified2direct(const Cana_Vec2 unified, float* bufferX, floa
     /* Can be optimized */
     *bufferX = (float)drawWidth / 2.0 + unified.x * (float)drawWidth / 2.0;
     *bufferY = (float)drawHeight / 2.0 - unified.y * (float)drawWidth / 2.0;
+}
+
+Cana_Vec2 Cana_Renderer::project3D(const Cana_Vec3 point_3D)
+{
+    Cana_Vec2 point_2D;
+    
+    point_2D.x = (-zV * point_3D.x) / (point_3D.z - zV);
+    point_2D.y = (-zV * point_3D.y) / (point_3D.z - zV);
+    
+    return point_2D;
 }
 
 void Cana_Renderer::drawSquare(const Cana_Vec2 position, const float size, const Uint32 color)
@@ -122,7 +132,7 @@ void Cana_Renderer::drawLine_unified(const Cana_Vec2 pointA, const Cana_Vec2 poi
     drawLine_direct(directPointA, directPointB, color, LINE_PIXEL_AMOUNT);
 }
 
-void Cana_Renderer::drawTriangle_direct(Cana_Vec2 pointA, Cana_Vec2 pointB, Cana_Vec2 pointC, Uint32 color)
+void Cana_Renderer::drawTriangle_direct(const Cana_Vec2 pointA, const Cana_Vec2 pointB, const Cana_Vec2 pointC, const Uint32 color)
 {
     /*    Phase 1 - Setup */
     /* Line AB */
@@ -177,7 +187,7 @@ void Cana_Renderer::drawTriangle_direct(Cana_Vec2 pointA, Cana_Vec2 pointB, Cana
     }
 }
 
-void Cana_Renderer::drawTriangle_unified(Cana_Vec2 pointA, Cana_Vec2 pointB, Cana_Vec2 pointC, Uint32 color)
+void Cana_Renderer::drawTriangle_unified(const Cana_Vec2 pointA, const Cana_Vec2 pointB, const Cana_Vec2 pointC, const Uint32 color)
 {
     Cana_Vec2 directPointA;
     Cana_Vec2 directPointB;
@@ -190,13 +200,30 @@ void Cana_Renderer::drawTriangle_unified(Cana_Vec2 pointA, Cana_Vec2 pointB, Can
     drawTriangle_direct(directPointA, directPointB, directPointC, color);
 }
 
-void Cana_Renderer::draw3dPoint_unified(Cana_Vec3 point3d, Uint32 color)
+void Cana_Renderer::drawPoint_3D(const Cana_Vec3 point3D, const float size, const Uint32 color)
 {
-    Cana_Vec2 point2d;
-    point2d.x = (-zV * point3d.x) / (point3d.z - zV);
-    point2d.y = (-zV * point3d.y) / (point3d.z - zV);
+    Cana_Vec2 point2D;
+    point2D.x = (-zV * point3D.x) / (point3D.z - zV);
+    point2D.y = (-zV * point3D.y) / (point3D.z - zV);
     
-    drawSquare(point2d, 0.01f, color);
+    drawSquare(point2D, size, color);
+}
+
+void Cana_Renderer::drawLine_3D(const Cana_Vec3 pointA_3D, const Cana_Vec3 pointB_3D, const Uint32 color)
+{
+    Cana_Vec2 pointA_2D = project3D(pointA_3D);
+    Cana_Vec2 pointB_2D = project3D(pointB_3D);
+    
+    drawLine_unified(pointA_2D, pointB_2D, color);
+}
+
+void Cana_Renderer::drawTriangle_3D(const Cana_Vec3 pointA_3D, const Cana_Vec3 pointB_3D, const Cana_Vec3 pointC_3D, const Uint32 color)
+{
+    Cana_Vec2 pointA_2D = project3D(pointA_3D);
+    Cana_Vec2 pointB_2D = project3D(pointB_3D);
+    Cana_Vec2 pointC_2D = project3D(pointC_3D);
+    
+    drawTriangle_unified(pointA_2D, pointB_2D, pointC_2D, color);
 }
 
 void Cana_Renderer::quit()

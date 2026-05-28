@@ -21,7 +21,12 @@
  - inline functions
  - change arguments to references
  
+    Bugs:
+ - triangle drawing likes to skip lines between point A and C (generally isn't too accurate)
+ 
     TODO:
+ - fix triangle bug (maybe by making it more *floaty*)
+ - 2D and 3D objects
  - add blured/sampled versions of screen functions
  - add float (blured/sampled) versions of drawing functions
  - try making Cana handle everything
@@ -48,8 +53,8 @@
 //  Defines
 #define SCREEN_WIDTH 1440
 #define SCREEN_HEIGHT 900
-#define DRAW_WIDTH 1280
-#define DRAW_HEIGHT 720
+#define DRAW_WIDTH 360
+#define DRAW_HEIGHT 225
 
 //  Structs
 
@@ -84,18 +89,115 @@ int main(int argc, char* argv[]) {
         /* Only draw here */
         renderer.clear(color.gray);
         
-//        renderer.drawSquare(Cana_Vec2(0, 0), 0.6, color.blue);
-//        renderer.drawTriangle_unified(Cana_Vec2(-0.35, -0.25), Cana_Vec2(0.35, -0.25), Cana_Vec2(0, 0.35), color.green);
-//        renderer.drawLine_unified(Cana_Vec2(-0.34, 0.12), Cana_Vec2(0.34, -0.12), color.red);
+        // Box 1
+        Cana_Vec3 point1(-4.0f, -2.5f, 3.5f);
+        Cana_Vec3 point2(-2.0f, -2.5f, 3.5f);
+        Cana_Vec3 point3(-2.0f, -0.5f, 3.5f);
+        Cana_Vec3 point4(-4.0f, -0.5f, 3.5f);
+        Cana_Vec3 point5(-4.0f, -2.5f, 5.5f);
+        Cana_Vec3 point6(-2.0f, -2.5f, 5.5f);
+        Cana_Vec3 point7(-2.0f, -0.5f, 5.5f);
+        Cana_Vec3 point8(-4.0f, -0.5f, 5.5f);
+        
+        // triangles
+        renderer.drawTriangle_3D(point5, point7, point6, color.yellow);
+        renderer.drawTriangle_3D(point7, point5, point8, color.yellow);
+        
+        renderer.drawTriangle_3D(point1, point8, point5, color.magenta);
+        renderer.drawTriangle_3D(point8, point1, point4, color.magenta);
+        
+        renderer.drawTriangle_3D(point1, point6, point2, color.cyan);
+        renderer.drawTriangle_3D(point6, point1, point5, color.cyan);
         //
-        renderer.draw3dPoint_unified(Cana_Vec3(-1.0f, -0.56f, 0.01f), color.white);
-        renderer.draw3dPoint_unified(Cana_Vec3( 1.0f, -0.56f, 0.01f), color.white);
-        renderer.draw3dPoint_unified(Cana_Vec3( 1.0f,  0.56f, 0.01f), color.white);
-        renderer.draw3dPoint_unified(Cana_Vec3(-1.0f,  0.56f, 0.01f), color.white);
-        renderer.draw3dPoint_unified(Cana_Vec3(-1.0f, -0.56f, 1.01f), color.white);
-        renderer.draw3dPoint_unified(Cana_Vec3( 1.0f, -0.56f, 1.01f), color.white);
-        renderer.draw3dPoint_unified(Cana_Vec3( 1.0f,  0.56f, 1.01f), color.white);
-        renderer.draw3dPoint_unified(Cana_Vec3(-1.0f,  0.56f, 1.01f), color.white);
+        renderer.drawTriangle_3D(point1, point3, point2, color.blue);
+        renderer.drawTriangle_3D(point3, point1, point4, color.blue);
+        
+        renderer.drawTriangle_3D(point2, point7, point6, color.red);
+        renderer.drawTriangle_3D(point7, point2, point3, color.red);
+        
+        renderer.drawTriangle_3D(point4, point7, point3, color.green);
+        renderer.drawTriangle_3D(point7, point4, point8, color.green);
+        
+        // lines
+        renderer.drawLine_3D(point1, point2, color.black);
+        renderer.drawLine_3D(point2, point3, color.black);
+        renderer.drawLine_3D(point3, point4, color.black);
+        renderer.drawLine_3D(point4, point1, color.black);
+
+        renderer.drawLine_3D(point5, point6, color.black);
+        renderer.drawLine_3D(point6, point7, color.black);
+        renderer.drawLine_3D(point7, point8, color.black);
+        renderer.drawLine_3D(point8, point5, color.black);
+
+        renderer.drawLine_3D(point1, point5, color.black);
+        renderer.drawLine_3D(point2, point6, color.black);
+        renderer.drawLine_3D(point3, point7, color.black);
+        renderer.drawLine_3D(point4, point8, color.black);
+        
+        // points
+        renderer.drawPoint_3D(point1, 0.008f, color.white);
+        renderer.drawPoint_3D(point2, 0.008f, color.white);
+        renderer.drawPoint_3D(point3, 0.008f, color.white);
+        renderer.drawPoint_3D(point4, 0.008f, color.white);
+        renderer.drawPoint_3D(point5, 0.008f, color.white);
+        renderer.drawPoint_3D(point6, 0.008f, color.white);
+        renderer.drawPoint_3D(point7, 0.008f, color.white);
+        renderer.drawPoint_3D(point8, 0.008f, color.white);
+        
+        // Box 2
+        Cana_Vec3 point21( 4.0f,  2.5f, 3.5f);
+        Cana_Vec3 point22( 2.0f,  2.5f, 3.5f);
+        Cana_Vec3 point23( 2.0f,  0.5f, 3.5f);
+        Cana_Vec3 point24( 4.0f,  0.5f, 3.5f);
+        Cana_Vec3 point25( 4.0f,  2.5f, 5.5f);
+        Cana_Vec3 point26( 2.0f,  2.5f, 5.5f);
+        Cana_Vec3 point27( 2.0f,  0.5f, 5.5f);
+        Cana_Vec3 point28( 4.0f,  0.5f, 5.5f);
+        
+        // triangles
+        renderer.drawTriangle_3D(point25, point26, point27, color.yellow);
+        renderer.drawTriangle_3D(point27, point28, point25, color.yellow);
+        
+        renderer.drawTriangle_3D(point21, point25, point28, color.magenta);
+        renderer.drawTriangle_3D(point28, point24, point21, color.magenta);
+        
+        renderer.drawTriangle_3D(point21, point22, point26, color.cyan);
+        renderer.drawTriangle_3D(point26, point25, point21, color.cyan);
+        //
+        renderer.drawTriangle_3D(point21, point22, point23, color.blue);
+        renderer.drawTriangle_3D(point23, point24, point21, color.blue);
+        
+        renderer.drawTriangle_3D(point22, point26, point27, color.red);
+        renderer.drawTriangle_3D(point27, point23, point22, color.red);
+        
+        renderer.drawTriangle_3D(point24, point23, point27, color.green);
+        renderer.drawTriangle_3D(point27, point28, point24, color.green);
+        
+        // lines
+        renderer.drawLine_3D(point21, point22, color.black);
+        renderer.drawLine_3D(point22, point23, color.black);
+        renderer.drawLine_3D(point23, point24, color.black);
+        renderer.drawLine_3D(point24, point21, color.black);
+
+        renderer.drawLine_3D(point25, point26, color.black);
+        renderer.drawLine_3D(point26, point27, color.black);
+        renderer.drawLine_3D(point27, point28, color.black);
+        renderer.drawLine_3D(point28, point25, color.black);
+
+        renderer.drawLine_3D(point21, point25, color.black);
+        renderer.drawLine_3D(point22, point26, color.black);
+        renderer.drawLine_3D(point23, point27, color.black);
+        renderer.drawLine_3D(point24, point28, color.black);
+        
+        // points
+        renderer.drawPoint_3D(point21, 0.008f, color.white);
+        renderer.drawPoint_3D(point22, 0.008f, color.white);
+        renderer.drawPoint_3D(point23, 0.008f, color.white);
+        renderer.drawPoint_3D(point24, 0.008f, color.white);
+        renderer.drawPoint_3D(point25, 0.008f, color.white);
+        renderer.drawPoint_3D(point26, 0.008f, color.white);
+        renderer.drawPoint_3D(point27, 0.008f, color.white);
+        renderer.drawPoint_3D(point28, 0.008f, color.white);
         
         /* Stop drawing */
         cana.drawingFinish();

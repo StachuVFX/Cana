@@ -78,6 +78,13 @@ public:
      * \param bufferY Pointer for height in direct dimensions
      */
     void unified2direct(const Cana_Vec2 unified, float* bufferX, float* bufferY);
+    
+    /**
+     * Project a 3D point to the 2D screen (drawing surface)
+     *
+     * \param point_3D 3D point to be projected
+     */
+    Cana_Vec2 project3D(const Cana_Vec3 point_3D);
 
     /**
      * Draw a square with a color
@@ -126,7 +133,7 @@ public:
      * \param pointC Third vertex
      * \param color Triangle color
      */
-    void drawTriangle_direct(Cana_Vec2 pointA, Cana_Vec2 pointB, Cana_Vec2 pointC, Uint32 color);
+    void drawTriangle_direct(const Cana_Vec2 pointA, const Cana_Vec2 pointB, const Cana_Vec2 pointC, const Uint32 color);
     
     /**
      * Draw a triangle between point A, point B and point C with a color
@@ -138,17 +145,40 @@ public:
      * \param pointC Third vertex
      * \param color Triangle color
      */
-    void drawTriangle_unified(Cana_Vec2 pointA, Cana_Vec2 pointB, Cana_Vec2 pointC, Uint32 color);
+    void drawTriangle_unified(const Cana_Vec2 pointA, const Cana_Vec2 pointB, const Cana_Vec2 pointC, const Uint32 color);
     
     /**
      * Draw a 3D point using a small square with a color
      *
      * Int based. Unified dimensions.
      *
-     * \param point3d 3D point
-     * \param color Triangle color
+     * \param point3D 3D point
+     * \param color Point color
      */
-    void draw3dPoint_unified(Cana_Vec3 point3d, Uint32 color);
+    void drawPoint_3D(const Cana_Vec3 point3D, const float size, const Uint32 color);
+    
+    /**
+     * Draw a line between two 3D points with a color
+     *
+     * Int based. Unified dimensions.
+     *
+     * \param pointA_3D First 3D point
+     * \param pointB_3D Second 3D point
+     * \param color Line color
+     */
+    void drawLine_3D(const Cana_Vec3 pointA_3D, const Cana_Vec3 pointB_3D, const Uint32 color);
+    
+    /**
+     * Draw a triangle between three 3D points with a color
+     *
+     * Int based. Unified dimensions.
+     *
+     * \param pointA_3D First 3D point
+     * \param pointB_3D Second 3D point
+     * \param pointC_3D Third 3D point
+     * \param color Line color
+     */
+    void drawTriangle_3D(const Cana_Vec3 pointA_3D, const Cana_Vec3 pointB_3D, const Cana_Vec3 pointC_3D, const Uint32 color);
     
     /**
      * Quit renderer
