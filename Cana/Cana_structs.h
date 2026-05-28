@@ -9,10 +9,6 @@
 
 #include <SDL3/SDL.h>
 
-/* Math defines */
-#define SIGN(X) ((X > 0) - (X < 0))
-#define MAX(X, Y) (X > Y ? X : Y)
-
 /* Colors */
 /**
  * \struct Cana\_Color

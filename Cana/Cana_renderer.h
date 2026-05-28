@@ -85,6 +85,16 @@ public:
      * \param point_3D 3D point to be projected
      */
     Cana_Vec2 project3D(const Cana_Vec3 point_3D);
+    
+    /**
+     * Draw a pixel with a color
+     *
+     * Int based. Unified dimensions.
+     *
+     * \param position Position of the pixel (relative to center)
+     * \param color Color
+     */
+    void drawPixel(const Cana_Vec2 position, const Uint32 color);
 
     /**
      * Draw a square with a color

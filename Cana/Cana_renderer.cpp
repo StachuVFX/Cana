@@ -6,12 +6,11 @@
 //
 
 #include "Cana_renderer.h"
+#include "Cana_math.h"
 
 #define LINE_PIXEL_AMOUNT PixelAmount_LessPixels
-#define FOV 85
-
-#define PI 3.14159265359
-#define RAD(X) X * PI / 180
+#define TRIANGLE_PIXEL_AMOUNT PixelAmount_LessPixels
+#define FOV 90
 
 /* Cana_Renderer */
 void Cana_Renderer::createDrawingSurface(const int surface_width, const int surface_height)
@@ -52,8 +51,8 @@ void Cana_Renderer::clear(const Uint32 color)
 void Cana_Renderer::unified2direct(const Cana_Vec2 unified, float* bufferX, float* bufferY)
 {
     /* Can be optimized */
-    *bufferX = (float)drawWidth / 2.0 + unified.x * (float)drawWidth / 2.0;
-    *bufferY = (float)drawHeight / 2.0 - unified.y * (float)drawWidth / 2.0;
+    *bufferX = ((float)drawWidth + unified.x * (float)drawWidth) / 2.0f;
+    *bufferY = ((float)drawHeight - unified.y * (float)drawWidth) / 2.0f;
 }
 
 Cana_Vec2 Cana_Renderer::project3D(const Cana_Vec3 point_3D)
@@ -66,17 +65,28 @@ Cana_Vec2 Cana_Renderer::project3D(const Cana_Vec3 point_3D)
     return point_2D;
 }
 
+void Cana_Renderer::drawPixel(const Cana_Vec2 position, const Uint32 color)
+{
+    int targetH = SDL_floorf(((float)drawHeight - position.y * (float)drawWidth) / 2.0f); // floor somehow fixes point-line missmatch lol
+    int targetW = SDL_floorf(((float)drawWidth + position.x * (float)drawWidth) / 2.0f);
+    /* Out of bounds protection */
+    if (targetH < 0 || targetH > (drawHeight - 1) || targetW < 0 || targetW > (drawWidth - 1)) {
+        return;
+    }
+    surfacePixels[targetH * drawWidth + targetW] = color;
+}
+
 void Cana_Renderer::drawSquare(const Cana_Vec2 position, const float size, const Uint32 color)
 {
-    int directSize = size * (float)drawWidth / 2.0;
+    float directSize = size * (float)drawWidth / 2.0f;
     for (int i = 0; i < directSize; i++) {
-        int targetH = drawHeight / 2 - position.y * drawWidth / 2 - (directSize / 2) + i;
+        int targetH = SDL_floorf(((float)drawHeight - position.y * (float)drawWidth - directSize) / 2.0f + (float)i);
         /* Out of bounds protection (height) */
         if (targetH < 0 || targetH > (drawHeight - 1)) {
             continue;
         }
         for (int j = 0; j < directSize; j++) {
-            int targetW = drawWidth / 2 + position.x * drawWidth / 2 - (directSize / 2) + j;
+            int targetW = SDL_floorf(((float)drawWidth + position.x * (float)drawWidth - directSize) / 2.0f + (float)j);
             /* Out of bounds protection (width) */
             if (targetW < 0 || targetW > (drawWidth - 1)) {
                 continue;
@@ -88,15 +98,15 @@ void Cana_Renderer::drawSquare(const Cana_Vec2 position, const float size, const
 
 void Cana_Renderer::drawLine_direct(const Cana_Vec2 pointA, const Cana_Vec2 pointB, const Uint32 color, const PixelAmount pixelAmount)
 {
-    int lineWidth = pointB.x - pointA.x;
-    int widthSign = SIGN(lineWidth);
+    float lineWidth = pointB.x - pointA.x;
+    float widthSign = SIGN(lineWidth);
     lineWidth *= widthSign;
     
-    int lineHeight = pointB.y - pointA.y;
-    int heightSign = SIGN(lineHeight);
+    float lineHeight = pointB.y - pointA.y;
+    float heightSign = SIGN(lineHeight);
     lineHeight *= heightSign;
     
-    int linePixelLength;
+    float linePixelLength;
     switch (pixelAmount) {
         case PixelAmount_MorePixels:
             linePixelLength = lineWidth + lineHeight;
@@ -108,8 +118,8 @@ void Cana_Renderer::drawLine_direct(const Cana_Vec2 pointA, const Cana_Vec2 poin
             break;
     }
     for (int i = 0; i < linePixelLength; i++) {
-        int localH = lineHeight * i / linePixelLength;
-        int localW = lineWidth * i / linePixelLength;
+        float localH = SDL_roundf(lineHeight * (float)i / linePixelLength);
+        float localW = SDL_roundf(lineWidth * (float)i / linePixelLength);
         int globalH = pointA.y + localH * heightSign;
         int globalW = pointA.x + localW * widthSign;
         /* Out of bounds protection */
@@ -136,34 +146,34 @@ void Cana_Renderer::drawTriangle_direct(const Cana_Vec2 pointA, const Cana_Vec2 
 {
     /*    Phase 1 - Setup */
     /* Line AB */
-    int lineABWidth = pointB.x - pointA.x;
-    int widthSignAB = SIGN(lineABWidth);
+    float lineABWidth = pointB.x - pointA.x;
+    float widthSignAB = SIGN(lineABWidth);
     lineABWidth *= widthSignAB;
     
-    int lineABHeight = pointB.y - pointA.y;
-    int heightSignAB = SIGN(lineABHeight);
+    float lineABHeight = pointB.y - pointA.y;
+    float heightSignAB = SIGN(lineABHeight);
     lineABHeight *= heightSignAB;
     
     /* Line AC */
-    int lineACWidth = pointC.x - pointA.x;
-    int widthSignAC = SIGN(lineACWidth);
+    float lineACWidth = pointC.x - pointA.x;
+    float widthSignAC = SIGN(lineACWidth);
     lineACWidth *= widthSignAC;
     
-    int lineACHeight = pointC.y - pointA.y;
-    int heightSignAC = SIGN(lineACHeight);
+    float lineACHeight = pointC.y - pointA.y;
+    float heightSignAC = SIGN(lineACHeight);
     lineACHeight *= heightSignAC;
     
     /* Specific pixel amount */
-    PixelAmount trianglePixelAmount = PixelAmount_LessPixels;
+    PixelAmount trianglePixelAmount = TRIANGLE_PIXEL_AMOUNT;
     
     /* Longer line */
-    int linePixelLength;
+    float linePixelLength;
     switch (trianglePixelAmount) {
-        case PixelAmount_MorePixels:
-            linePixelLength = MAX(lineABWidth + lineABHeight, lineACWidth + lineACHeight);
-            break;
         case PixelAmount_LessPixels:
             linePixelLength = MAX(MAX(lineABWidth, lineABHeight), MAX(lineACWidth, lineACHeight));
+            break;
+        case PixelAmount_MorePixels:
+            linePixelLength = MAX(lineABWidth + lineABHeight, lineACWidth + lineACHeight);
             break;
         default:
             break;
@@ -171,14 +181,14 @@ void Cana_Renderer::drawTriangle_direct(const Cana_Vec2 pointA, const Cana_Vec2 
     /* Phase 2 - Going through lines */
     for (int i = 0; i < linePixelLength; i++) {
         /* Line AB */
-        int localABH = lineABHeight * i / linePixelLength;
-        int localABW = lineABWidth * i / linePixelLength;
+        float localABH = SDL_roundf(lineABHeight * (float)i / linePixelLength);
+        float localABW = SDL_roundf(lineABWidth * (float)i / linePixelLength);
         int globalABH = pointA.y + localABH * heightSignAB;
         int globalABW = pointA.x + localABW * widthSignAB;
         
         /* Line AC */
-        int localACH = lineACHeight * i / linePixelLength;
-        int localACW = lineACWidth * i / linePixelLength;
+        float localACH = SDL_roundf(lineACHeight * (float)i / linePixelLength);
+        float localACW = SDL_roundf(lineACWidth * (float)i / linePixelLength);
         int globalACH = pointA.y + localACH * heightSignAC;
         int globalACW = pointA.x + localACW * widthSignAC;
         
@@ -206,7 +216,8 @@ void Cana_Renderer::drawPoint_3D(const Cana_Vec3 point3D, const float size, cons
     point2D.x = (-zV * point3D.x) / (point3D.z - zV);
     point2D.y = (-zV * point3D.y) / (point3D.z - zV);
     
-    drawSquare(point2D, size, color);
+//    drawSquare(point2D, size, color);
+    drawPixel(point2D, color);
 }
 
 void Cana_Renderer::drawLine_3D(const Cana_Vec3 pointA_3D, const Cana_Vec3 pointB_3D, const Uint32 color)

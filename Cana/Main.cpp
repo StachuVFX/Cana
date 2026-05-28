@@ -22,10 +22,11 @@
  - change arguments to references
  
     Bugs:
- - triangle drawing likes to skip lines between point A and C (generally isn't too accurate)
+ - triangle drawing is very inaccurate (still after a day of debugging)
  
     TODO:
- - fix triangle bug (maybe by making it more *floaty*)
+ - finish fixing the triangle bug
+ - move fov to main
  - 2D and 3D objects
  - add blured/sampled versions of screen functions
  - add float (blured/sampled) versions of drawing functions
@@ -36,9 +37,10 @@
  - set drawing reference ([-1, 1]) to lower dimension (maybe)
  
     DONE:
- - move SDL includes to Cana.h
- - small fixes
- - add 3D (perfect unified point projection)
+ - made rendering functions more accurate (aka more *floaty*)
+ - optimizd rendering functions a little
+ - created a math file for function defines
+ - other minor fixes
 */
 
 //  System Includes
@@ -109,40 +111,40 @@ int main(int argc, char* argv[]) {
         renderer.drawTriangle_3D(point1, point6, point2, color.cyan);
         renderer.drawTriangle_3D(point6, point1, point5, color.cyan);
         //
-        renderer.drawTriangle_3D(point1, point3, point2, color.blue);
-        renderer.drawTriangle_3D(point3, point1, point4, color.blue);
-        
         renderer.drawTriangle_3D(point2, point7, point6, color.red);
         renderer.drawTriangle_3D(point7, point2, point3, color.red);
         
         renderer.drawTriangle_3D(point4, point7, point3, color.green);
         renderer.drawTriangle_3D(point7, point4, point8, color.green);
         
+        renderer.drawTriangle_3D(point1, point3, point2, color.blue);
+        renderer.drawTriangle_3D(point3, point1, point4, color.blue);
+        
         // lines
-        renderer.drawLine_3D(point1, point2, color.black);
-        renderer.drawLine_3D(point2, point3, color.black);
-        renderer.drawLine_3D(point3, point4, color.black);
-        renderer.drawLine_3D(point4, point1, color.black);
-
-        renderer.drawLine_3D(point5, point6, color.black);
-        renderer.drawLine_3D(point6, point7, color.black);
-        renderer.drawLine_3D(point7, point8, color.black);
-        renderer.drawLine_3D(point8, point5, color.black);
-
-        renderer.drawLine_3D(point1, point5, color.black);
-        renderer.drawLine_3D(point2, point6, color.black);
-        renderer.drawLine_3D(point3, point7, color.black);
-        renderer.drawLine_3D(point4, point8, color.black);
+//        renderer.drawLine_3D(point1, point2, color.black);
+//        renderer.drawLine_3D(point2, point3, color.black);
+//        renderer.drawLine_3D(point3, point4, color.black);
+//        renderer.drawLine_3D(point4, point1, color.black);
+//
+//        renderer.drawLine_3D(point5, point6, color.black);
+//        renderer.drawLine_3D(point6, point7, color.black);
+//        renderer.drawLine_3D(point7, point8, color.black);
+//        renderer.drawLine_3D(point8, point5, color.black);
+//
+//        renderer.drawLine_3D(point1, point5, color.black);
+//        renderer.drawLine_3D(point2, point6, color.black);
+//        renderer.drawLine_3D(point3, point7, color.black);
+//        renderer.drawLine_3D(point4, point8, color.black);
         
         // points
-        renderer.drawPoint_3D(point1, 0.008f, color.white);
-        renderer.drawPoint_3D(point2, 0.008f, color.white);
-        renderer.drawPoint_3D(point3, 0.008f, color.white);
-        renderer.drawPoint_3D(point4, 0.008f, color.white);
-        renderer.drawPoint_3D(point5, 0.008f, color.white);
-        renderer.drawPoint_3D(point6, 0.008f, color.white);
-        renderer.drawPoint_3D(point7, 0.008f, color.white);
-        renderer.drawPoint_3D(point8, 0.008f, color.white);
+        renderer.drawPoint_3D(point1, 0.001f, color.white);
+        renderer.drawPoint_3D(point2, 0.001f, color.white);
+        renderer.drawPoint_3D(point3, 0.001f, color.white);
+        renderer.drawPoint_3D(point4, 0.001f, color.white);
+        renderer.drawPoint_3D(point5, 0.001f, color.white);
+        renderer.drawPoint_3D(point6, 0.001f, color.white);
+        renderer.drawPoint_3D(point7, 0.001f, color.white);
+        renderer.drawPoint_3D(point8, 0.001f, color.white);
         
         // Box 2
         Cana_Vec3 point21( 4.0f,  2.5f, 3.5f);
@@ -164,40 +166,40 @@ int main(int argc, char* argv[]) {
         renderer.drawTriangle_3D(point21, point22, point26, color.cyan);
         renderer.drawTriangle_3D(point26, point25, point21, color.cyan);
         //
-        renderer.drawTriangle_3D(point21, point22, point23, color.blue);
-        renderer.drawTriangle_3D(point23, point24, point21, color.blue);
-        
         renderer.drawTriangle_3D(point22, point26, point27, color.red);
         renderer.drawTriangle_3D(point27, point23, point22, color.red);
         
         renderer.drawTriangle_3D(point24, point23, point27, color.green);
         renderer.drawTriangle_3D(point27, point28, point24, color.green);
         
+        renderer.drawTriangle_3D(point21, point22, point23, color.blue);
+        renderer.drawTriangle_3D(point23, point24, point21, color.blue);
+        
         // lines
-        renderer.drawLine_3D(point21, point22, color.black);
-        renderer.drawLine_3D(point22, point23, color.black);
-        renderer.drawLine_3D(point23, point24, color.black);
-        renderer.drawLine_3D(point24, point21, color.black);
-
-        renderer.drawLine_3D(point25, point26, color.black);
-        renderer.drawLine_3D(point26, point27, color.black);
-        renderer.drawLine_3D(point27, point28, color.black);
-        renderer.drawLine_3D(point28, point25, color.black);
-
-        renderer.drawLine_3D(point21, point25, color.black);
-        renderer.drawLine_3D(point22, point26, color.black);
-        renderer.drawLine_3D(point23, point27, color.black);
-        renderer.drawLine_3D(point24, point28, color.black);
+//        renderer.drawLine_3D(point21, point22, color.black);
+//        renderer.drawLine_3D(point22, point23, color.black);
+//        renderer.drawLine_3D(point23, point24, color.black);
+//        renderer.drawLine_3D(point24, point21, color.black);
+//
+//        renderer.drawLine_3D(point25, point26, color.black);
+//        renderer.drawLine_3D(point26, point27, color.black);
+//        renderer.drawLine_3D(point27, point28, color.black);
+//        renderer.drawLine_3D(point28, point25, color.black);
+//
+//        renderer.drawLine_3D(point21, point25, color.black);
+//        renderer.drawLine_3D(point22, point26, color.black);
+//        renderer.drawLine_3D(point23, point27, color.black);
+//        renderer.drawLine_3D(point24, point28, color.black);
         
         // points
-        renderer.drawPoint_3D(point21, 0.008f, color.white);
-        renderer.drawPoint_3D(point22, 0.008f, color.white);
-        renderer.drawPoint_3D(point23, 0.008f, color.white);
-        renderer.drawPoint_3D(point24, 0.008f, color.white);
-        renderer.drawPoint_3D(point25, 0.008f, color.white);
-        renderer.drawPoint_3D(point26, 0.008f, color.white);
-        renderer.drawPoint_3D(point27, 0.008f, color.white);
-        renderer.drawPoint_3D(point28, 0.008f, color.white);
+        renderer.drawPoint_3D(point21, 0.001f, color.white);
+        renderer.drawPoint_3D(point22, 0.001f, color.white);
+        renderer.drawPoint_3D(point23, 0.001f, color.white);
+        renderer.drawPoint_3D(point24, 0.001f, color.white);
+        renderer.drawPoint_3D(point25, 0.001f, color.white);
+        renderer.drawPoint_3D(point26, 0.001f, color.white);
+        renderer.drawPoint_3D(point27, 0.001f, color.white);
+        renderer.drawPoint_3D(point28, 0.001f, color.white);
         
         /* Stop drawing */
         cana.drawingFinish();
