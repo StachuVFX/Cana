@@ -25,7 +25,16 @@
  -
  
     TODO:
- - 2D and 3D objects
+ - add 2D objects
+    * vertex array class
+    * drawable class hierarchy
+        - drawable
+            * primitive
+                - square
+                - equal-arm triangle
+            * object
+    * functions to draw all lines or triangles
+ - add 3D objects
  - add blured/sampled versions of screen functions
  - add float (blured/sampled) versions of drawing functions
  - try making Cana handle everything
@@ -35,8 +44,8 @@
  - set drawing reference ([-1, 1]) to lower dimension (maybe)
  
     DONE:
- - finally fixed the triangle bug in a lazy, stupid and not too efficient way, but at least it looks good
- - move fov to main
+ - added arithmetic operations to Vec2 and Vec3
+ - added integer versions of Vec2 and Vec3
 */
 
 //  System Includes
