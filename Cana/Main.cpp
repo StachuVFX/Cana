@@ -22,11 +22,9 @@
  - change arguments to references
  
     Bugs:
- - triangle drawing is very inaccurate (still after a day of debugging)
+ -
  
     TODO:
- - finish fixing the triangle bug
- - move fov to main
  - 2D and 3D objects
  - add blured/sampled versions of screen functions
  - add float (blured/sampled) versions of drawing functions
@@ -37,7 +35,8 @@
  - set drawing reference ([-1, 1]) to lower dimension (maybe)
  
     DONE:
- - tiny improvement to the triangle drawing
+ - finally fixed the triangle bug in a lazy, stupid and not too efficient way, but at least it looks good
+ - move fov to main
 */
 
 //  System Includes
@@ -52,8 +51,9 @@
 //  Defines
 #define SCREEN_WIDTH 1440
 #define SCREEN_HEIGHT 900
-#define DRAW_WIDTH 360
-#define DRAW_HEIGHT 225
+#define DRAW_WIDTH 1440
+#define DRAW_HEIGHT 900
+#define FOV 90
 
 //  Structs
 
@@ -67,7 +67,7 @@ int main(int argc, char* argv[]) {
     Cana cana("Cana Test", "0.1.2", "name.stachu.Cana");
     /* Screen and renderer */
     cana.createWindow("Cana Test", SCREEN_WIDTH, SCREEN_HEIGHT, WindowType_Fullscreen);
-    Cana_Renderer renderer = cana.createRenderer(DRAW_WIDTH, DRAW_HEIGHT);
+    Cana_Renderer renderer = cana.createRenderer(DRAW_WIDTH, DRAW_HEIGHT, FOV);
     
 /* Game setup */
     /* Colors */
@@ -134,14 +134,14 @@ int main(int argc, char* argv[]) {
 //        renderer.drawLine_3D(point4, point8, color.black);
         
         // points
-        renderer.drawPoint_3D(point1, 0.001f, color.white);
-        renderer.drawPoint_3D(point2, 0.001f, color.white);
-        renderer.drawPoint_3D(point3, 0.001f, color.white);
-        renderer.drawPoint_3D(point4, 0.001f, color.white);
-        renderer.drawPoint_3D(point5, 0.001f, color.white);
-        renderer.drawPoint_3D(point6, 0.001f, color.white);
-        renderer.drawPoint_3D(point7, 0.001f, color.white);
-        renderer.drawPoint_3D(point8, 0.001f, color.white);
+//        renderer.drawPoint_3D(point1, 0.001f, color.white);
+//        renderer.drawPoint_3D(point2, 0.001f, color.white);
+//        renderer.drawPoint_3D(point3, 0.001f, color.white);
+//        renderer.drawPoint_3D(point4, 0.001f, color.white);
+//        renderer.drawPoint_3D(point5, 0.001f, color.white);
+//        renderer.drawPoint_3D(point6, 0.001f, color.white);
+//        renderer.drawPoint_3D(point7, 0.001f, color.white);
+//        renderer.drawPoint_3D(point8, 0.001f, color.white);
         
         // Box 2
         Cana_Vec3 point21( 4.0f,  2.5f, 3.5f);
@@ -189,14 +189,14 @@ int main(int argc, char* argv[]) {
 //        renderer.drawLine_3D(point24, point28, color.black);
         
         // points
-        renderer.drawPoint_3D(point21, 0.001f, color.white);
-        renderer.drawPoint_3D(point22, 0.001f, color.white);
-        renderer.drawPoint_3D(point23, 0.001f, color.white);
-        renderer.drawPoint_3D(point24, 0.001f, color.white);
-        renderer.drawPoint_3D(point25, 0.001f, color.white);
-        renderer.drawPoint_3D(point26, 0.001f, color.white);
-        renderer.drawPoint_3D(point27, 0.001f, color.white);
-        renderer.drawPoint_3D(point28, 0.001f, color.white);
+//        renderer.drawPoint_3D(point21, 0.001f, color.white);
+//        renderer.drawPoint_3D(point22, 0.001f, color.white);
+//        renderer.drawPoint_3D(point23, 0.001f, color.white);
+//        renderer.drawPoint_3D(point24, 0.001f, color.white);
+//        renderer.drawPoint_3D(point25, 0.001f, color.white);
+//        renderer.drawPoint_3D(point26, 0.001f, color.white);
+//        renderer.drawPoint_3D(point27, 0.001f, color.white);
+//        renderer.drawPoint_3D(point28, 0.001f, color.white);
         
         /* Stop drawing */
         cana.drawingFinish();

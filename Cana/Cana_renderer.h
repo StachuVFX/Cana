@@ -48,7 +48,7 @@ public:
      * \param surface_width Width of the surface
      * \param surface_height Height of the surface
      */
-    void createDrawingSurface(const int surface_width, const int surface_height);
+    void createDrawingSurface(const int surface_width, const int surface_height, const float fov);
     
     /**
      * Prepare renderer to start drawing

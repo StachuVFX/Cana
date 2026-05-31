@@ -10,10 +10,9 @@
 
 #define LINE_PIXEL_AMOUNT PixelAmount_LessPixels
 #define TRIANGLE_PIXEL_AMOUNT PixelAmount_LessPixels
-#define FOV 90
 
 /* Cana_Renderer */
-void Cana_Renderer::createDrawingSurface(const int surface_width, const int surface_height)
+void Cana_Renderer::createDrawingSurface(const int surface_width, const int surface_height, const float fov)
 {
     /* Create drawing surface */
     drawWidth = surface_width;
@@ -24,7 +23,6 @@ void Cana_Renderer::createDrawingSurface(const int surface_width, const int surf
     surfaceLength = surface_width * surface_height;
     surfaceRatio = (float)surface_height / (float)surface_width;
     /* Set up 3D */
-    fov = FOV;
     zV = -1 / SDL_tanf(RAD(fov / 2.0f));
 }
 
@@ -193,8 +191,12 @@ void Cana_Renderer::drawTriangle_direct(const Cana_Vec2 pointA, const Cana_Vec2 
         int globalACW = pointA.x + localACW * widthSignAC;
         
         /* Drawing lines */
-        drawLine_direct(Cana_Vec2(globalABW, globalABH), Cana_Vec2(globalACW, globalACH), color, PixelAmount_MorePixels);
+        drawLine_direct(Cana_Vec2(globalABW, globalABH), Cana_Vec2(globalACW, globalACH), color, PixelAmount_LessPixels);
     }
+    /* Inaccuracy fix (idiot edition) */
+    drawLine_direct(pointA, pointB, color, PixelAmount_LessPixels);
+    drawLine_direct(pointB, pointC, color, PixelAmount_LessPixels);
+    drawLine_direct(pointC, pointA, color, PixelAmount_LessPixels);
 }
 
 void Cana_Renderer::drawTriangle_unified(const Cana_Vec2 pointA, const Cana_Vec2 pointB, const Cana_Vec2 pointC, const Uint32 color)
