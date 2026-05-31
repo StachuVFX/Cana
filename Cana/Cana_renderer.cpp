@@ -51,8 +51,8 @@ void Cana_Renderer::clear(const Uint32 color)
 void Cana_Renderer::unified2direct(const Cana_Vec2 unified, float* bufferX, float* bufferY)
 {
     /* Can be optimized */
-    *bufferX = ((float)drawWidth + unified.x * (float)drawWidth) / 2.0f;
-    *bufferY = ((float)drawHeight - unified.y * (float)drawWidth) / 2.0f;
+    *bufferX = SDL_floorf(((float)drawWidth + unified.x * (float)drawWidth) / 2.0f);
+    *bufferY = SDL_floorf(((float)drawHeight - unified.y * (float)drawWidth) / 2.0f);
 }
 
 Cana_Vec2 Cana_Renderer::project3D(const Cana_Vec3 point_3D)

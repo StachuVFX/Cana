@@ -37,10 +37,7 @@
  - set drawing reference ([-1, 1]) to lower dimension (maybe)
  
     DONE:
- - made rendering functions more accurate (aka more *floaty*)
- - optimizd rendering functions a little
- - created a math file for function defines
- - other minor fixes
+ - tiny improvement to the triangle drawing
 */
 
 //  System Includes
