@@ -239,6 +239,34 @@ void Cana_Renderer::drawTriangle_3D(const Cana_Vec3 pointA_3D, const Cana_Vec3 p
     drawTriangle_unified(pointA_2D, pointB_2D, pointC_2D, color);
 }
 
+void Cana_Renderer::drawObject2(const Cana_Object2& object, Uint32 color)
+{
+    const Cana_VertexArrayObject2* vao = object.getVertexArrayObject();
+    
+//    const int vertexCount = vao->getVertexCount();
+    const Cana_Vec2* vertices = vao->getVertices();
+    
+    const int indexCount = vao->getIndexCount();
+    const Cana_Vec3_int* indices = vao->getIndices();
+    
+    for (int i = 0; i < indexCount; i++) {
+        // relative (raw points)
+        Cana_Vec2 pointA = vertices[indices[i].x];
+        Cana_Vec2 pointB = vertices[indices[i].y];
+        Cana_Vec2 pointC = vertices[indices[i].z];
+        // scaled
+        pointA.multiply(object.getScale());
+        pointB.multiply(object.getScale());
+        pointC.multiply(object.getScale());
+        // absolute (scaled and translated)
+        pointA.add(object.getPosition());
+        pointB.add(object.getPosition());
+        pointC.add(object.getPosition());
+        
+        drawTriangle_unified(pointA, pointB, pointC, color);
+    }
+}
+
 void Cana_Renderer::quit()
 {
     /* Cleaning */

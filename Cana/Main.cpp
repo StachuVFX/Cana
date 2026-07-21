@@ -15,6 +15,7 @@
     * 2. Lines between two sides, simultanous (starting from one vertex, ending at the other vertices at the same time) - inefficient
     * 3. Only horizontal lines, phased (starting from top vertex, ending at bottom vertex, 2 phases divided by the middle vertex) - efficient
     * 4. Using straight line relative equations and comparisons - probably inefficient
+    * My solution - option 3 with tweaks (like drawing triangle outline)
  
     Possible optimizations:
  - implement timing to test solution speed
@@ -25,15 +26,36 @@
  -
  
     TODO:
+ - improve the worlflow
+    * focus on 2D for now, 3D is ready for when you're ready
+    * split the code into small parts for specific tasks
+    * 2 major branches
+        - simple
+            * easy to read
+            * using high-level functionalities
+            * no need for optimization
+        - efficient
+            * heavy optimization
+            * no high-level functionalities
+            * no need for readability
+    * optional branches
+        - feature
+            * merging to simple
+            * new features
+            * unoptimized
+        - experimental
+            * merging to efficient
+            * new optimizations
+            * possibly unstable
+        - maybe other task-specific branches
  - add 2D objects
-    * vertex array class
     * drawable class hierarchy
         - drawable
             * primitive
                 - square
-                - equal-arm triangle
-            * object
-    * functions to draw all lines or triangles
+                - circle
+    * function to draw all lines
+    * object rotation
  - add 3D objects
  - add blured/sampled versions of screen functions
  - add float (blured/sampled) versions of drawing functions
@@ -44,8 +66,15 @@
  - set drawing reference ([-1, 1]) to lower dimension (maybe)
  
     DONE:
- - added arithmetic operations to Vec2 and Vec3
- - added integer versions of Vec2 and Vec3
+ - add 2D objects
+    * vertex array class
+    * drawable class hierarchy
+        - drawable
+            * primitive
+                - object
+                    * square
+                    * equal-arm triangle
+    * function to draw all triangles
 */
 
 //  System Includes
@@ -206,6 +235,12 @@ int main(int argc, char* argv[]) {
 //        renderer.drawPoint_3D(point26, 0.001f, color.white);
 //        renderer.drawPoint_3D(point27, 0.001f, color.white);
 //        renderer.drawPoint_3D(point28, 0.001f, color.white);
+        
+        // squares (as objects)
+        Cana_Square2 square1(Cana_Vec2( 0.5f, -0.2f), 0.2f);
+        Cana_Square2 square2(Cana_Vec2(-0.5f,  0.2f), 0.2f);
+        renderer.drawObject2(square1, color.blue);
+        renderer.drawObject2(square2, color.green);
         
         /* Stop drawing */
         cana.drawingFinish();

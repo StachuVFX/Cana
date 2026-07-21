@@ -9,6 +9,7 @@
 
 #include <SDL3/SDL.h>
 #include "Cana_structs.h"
+#include "Cana_objects2.h"
 
 /* Enums */
 /**
@@ -189,6 +190,16 @@ public:
      * \param color Line color
      */
     void drawTriangle_3D(const Cana_Vec3 pointA_3D, const Cana_Vec3 pointB_3D, const Cana_Vec3 pointC_3D, const Uint32 color);
+    
+    /**
+     * Draw a 2D object
+     *
+     * Needs adding rotation
+     *
+     * \param object The object to be drawn
+     * \param color The color of the object
+     */
+    void drawObject2(const Cana_Object2& object, Uint32 color);
     
     /**
      * Quit renderer
